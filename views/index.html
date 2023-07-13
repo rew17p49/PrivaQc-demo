@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>IMCT_DEMO</title>
+  <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/datatables.min.css">
+</head>
+
+<body>
+  <!-- NavBar -->
+  <nav class="navbar navbar-priva">
+    <div class="container-fluid">
+      <a class="navbar-brand">
+        <img class="logo" src="img/Priva Logo.png" alt="">
+      </a>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Ouality control</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/sampling">Sampling data</a>
+        </li>
+      </ul>
+
+
+    </div>
+  </nav>
+
+  <!-- Body -->
+  <div class="container py-4">
+    <div class="row my-5 mt-3">
+      <div class="col">
+        <h1 class="text-center">Priva Quality Control</h1>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col">
+        <div class="card shadow p-2">
+          <div class="card-body">
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" placeholder="your reference number" id="input_ref">
+              <button class="btn btn-success" type="button" id="ref_search">search</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-lg-4  mb-4">
+        <div class="card h-100 shadow p-2">
+          <div class="card-body">
+            <div class="box mb-3">
+              <div class="d-flex mb-2">
+                <div class="input-group input-group-sm me-2">
+                  <span class="input-group-text">Mean</span>
+                  <input type="text" class="form-control" id="show_Mean" disabled>
+                </div>
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text">SD</span>
+                  <input type="text" class="form-control show_SD" id="show_SD">
+                </div>
+              </div>
+
+              <div class="d-flex mb-3">
+                <div class="input-group input-group-sm me-2">
+                  <span class="input-group-text">LCL</span>
+                  <input type="text" class="form-control show_LCL" id="show_LCL">
+                </div>
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text">UCL</span>
+                  <input type="text" class="form-control show_UCL" id="show_UCL">
+                </div>
+              </div>
+              <button class="btn btn-sm btn-success w-100" type="submit" id="change_data">submit</button>
+
+
+            </div>
+            <div class="table-responsive text-center">
+              <table class="table  table-striped text-nowrap  table-sm table-bordered " id="tableMaster">
+                <thead class=" table-dark">
+                  <tr>
+                    <th class="text-center">Date & Time</th>
+                    <th class="text-center">Value</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-8  mb-4">
+        <div class="card shadow p-2">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-check form-switch " id="btn_change">
+                  <input class="form-check-input" type="checkbox" id="type_chart">
+                  <label class="form-check-label" for="type_chart">Change chart type.</label>
+                </div>
+              </div>
+              <div class="col">
+                <div id="controlChart"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="card shadow p-2">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 col-lg-3">
+                <div class="box mb-3">
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">CP</span>
+                    <input type="text" class="form-control show_Cp" disabled>
+                  </div>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">CPL</span>
+                    <input type="text" class="form-control show_Cpl" disabled>
+                  </div>
+                  <div class="input-group mb-3">
+                    <span class="input-group-text">CPU</span>
+                    <input type="text" class="form-control show_Cpu" disabled>
+                  </div>
+                  <div class="input-group">
+                    <span class="input-group-text">PPK</span>
+                    <input type="text" class="form-control show_Ppk" disabled>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div id="histogramChart"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/jquery/dist/jquery.min.js"></script>
+  <script src="/js/datatables.min.js"></script>
+  <script src="/js/chart.min.js"></script>
+  <script src="/js/plotly.min.js"></script>
+  <script src="/js/math.js"></script>
+  <script src="/js/swalalert2.js"></script>
+
+  <!-- <script src="/scripts/test.js"></script> -->
+  <script src="/scripts/table.js"></script>
+  <script src="/scripts/chart.js"></script>
+
+</body>
+
+
+</html>
