@@ -182,7 +182,7 @@ $("#random_form,#one_form").submit(async function (e) {
     };
     try {
       let res = await AjaxJasonData(
-        `${ip}/masterdata/add/random`,
+        `/masterdata/add/random`,
         "post",
         data
       );
@@ -197,7 +197,7 @@ $("#random_form,#one_form").submit(async function (e) {
       valueDatetime: time,
     };
     try {
-      let res = await AjaxJasonData(`${ip}/masterdata/add`, "post", data);
+      let res = await AjaxJasonData(`/masterdata/add`, "post", data);
       SwalAlert(res, "upload");
     } catch (error) {
       SwalAlert(error, "error");

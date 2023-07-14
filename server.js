@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const port = 3000;
-const ipAddress = "127.0.11.11";
+// const ipAddress = "127.0.11.11";
 
 // Middleware สำหรับรับข้อมูล JSON
 app.use(express.json());
@@ -35,8 +35,8 @@ app.get("/sampling", (req, res) => {
   res.sendFile(__dirname + "/views/sampling.html");
 });
 
-app.listen(port, ipAddress, () => {
-  console.log(`Server is running on ${ipAddress}:${port}`);
+app.listen(port, () => {
+  console.log(`Server is running on ${port}`);
 });
 
 // get data
