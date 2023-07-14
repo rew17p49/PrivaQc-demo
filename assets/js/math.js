@@ -89,6 +89,7 @@ function SwalAlert(txt, title) {
   let action = title.toUpperCase();
   let Text;
   if (action == "ERROR") {
+    console.log(txt)
     if (txt.responseJSON.message) Text = txt.responseJSON.message;
     Swal.fire({
       position: "center",
