@@ -1,10 +1,12 @@
 var value = [];
 const demo = "demo";
+const d2 = 1.128; // มาจากตาราง
+const w = 2;
 $("#input_ref").val(demo);
 
-function genChart(value, M = null, SD = null, lcl = null, ucl = null) {
+function genChart(value, M = null, SD_PPK = null, lcl = null, ucl = null) {
   if (M) M = parseFloat(M);
-  if (SD) SD = parseFloat(SD);
+  if (SD_PPK) SD_PPK = parseFloat(SD_PPK);
   if (lcl) lcl = parseFloat(lcl);
   if (ucl) ucl = parseFloat(ucl);
 
@@ -13,32 +15,62 @@ function genChart(value, M = null, SD = null, lcl = null, ucl = null) {
   let rule = 1.2;
   for (let i = 1; i <= value.length; i++) cases.push(i);
 
+  // PPK
   let mean = M || calMean(value);
-  let sd = SD || calSD(value);
-  let _3sd = 3 * sd;
-  let _6sd = 6 * sd;
+  let sd_PPK = SD_PPK || calSD_PPK(value);
+  let _3sd_PPK = 3 * sd_PPK;
+  let _6sd_PPK = 6 * sd_PPK;
 
   let minCase = Math.min(...cases) - 1;
   let maxCase = Math.max(...cases) + 1;
 
-  let LCL = lcl || parseFloat((mean - rule * sd).toFixed(2));
-  let UCL = ucl || parseFloat((mean + rule * sd).toFixed(2));
+  let LCL = lcl || parseFloat((mean - rule * sd_PPK).toFixed(2));
+  let UCL = ucl || parseFloat((mean + rule * sd_PPK).toFixed(2));
 
-  let cp = (UCL - LCL) / _6sd;
-  let cpl = (mean - LCL) / _3sd;
-  let cpu = (UCL - mean) / _3sd;
-  let ppk = Math.min(cpu, cpl);
+  let pp = (UCL - LCL) / _6sd_PPK;
+  let ppl = (mean - LCL) / _3sd_PPK;
+  let ppu = (UCL - mean) / _3sd_PPK;
+  let ppk = Math.min(ppu, ppl);
+
+  // CPK
+  let AMR; // Averange Moving Range
+  let sumValueDef = 0;
+  for (let i = 0; i < value.length; i++) {
+    if (i == 0) sumValueDef += 0;
+    else {
+      sumValueDef += Math.abs(value[i] - value[i - 1]);
+    }
+  }
+  AMR = sumValueDef / (value.length - w + 1);
+  let sd_CPK = AMR / d2;
+  let _3sd_CPK = 3 * sd_CPK;
+  let _6sd_CPK = 6 * sd_CPK;
+
+  let cp = (UCL - LCL) / _6sd_CPK;
+  let cpl = (mean - LCL) / _3sd_CPK;
+  let cpu = (UCL - mean) / _3sd_CPK;
+  let cpk = Math.min(cpu, cpl);
+  console.log("cpk: ", sd_CPK);
 
   // Show
+  $("#show_Mean").val(mean.toFixed(2));
+  $("#show_SD_PPK").val(sd_PPK.toFixed(2));
+  $("#show_LCL").val(LCL.toFixed(2));
+  $("#show_UCL").val(UCL.toFixed(2));
+
+  $(".show_SD_Ppk").val(sd_PPK.toFixed(2));
+  $(".show_Pp").val(pp.toFixed(2));
+  $(".show_Ppl").val(ppl.toFixed(2));
+  $(".show_Ppu").val(ppu.toFixed(2));
+  $(".show_Ppk").val(ppk.toFixed(2));
+
+  $(".show_SD_Cpk").val(sd_CPK.toFixed(2));
   $(".show_Cp").val(cp.toFixed(2));
   $(".show_Cpl").val(cpl.toFixed(2));
   $(".show_Cpu").val(cpu.toFixed(2));
-  $(".show_Ppk").val(ppk.toFixed(2));
+  $(".show_Cpk").val(cpk.toFixed(2));
 
-  $("#show_Mean").val(mean.toFixed(2));
-  $("#show_SD").val(sd.toFixed(2));
-  $("#show_LCL").val(LCL.toFixed(2));
-  $("#show_UCL").val(UCL.toFixed(2));
+  
 
   let CL = {
     x: [minCase, maxCase, null, minCase, maxCase],
@@ -47,7 +79,7 @@ function genChart(value, M = null, SD = null, lcl = null, ucl = null) {
 
   let Centre = {
     x: [minCase, maxCase],
-    y: [(UCL+LCL)/2, (UCL+LCL)/2],
+    y: [(UCL + LCL) / 2, (UCL + LCL) / 2],
   };
 
   // Control Chart
@@ -130,7 +162,6 @@ function genChart(value, M = null, SD = null, lcl = null, ucl = null) {
     },
     yaxis: {
       autorange: true,
-      // range: [minCase - sd, maxCase + sd],
       zeroline: false,
     },
   };
@@ -146,32 +177,48 @@ function genChart(value, M = null, SD = null, lcl = null, ucl = null) {
   let maxValue = Math.max(...value);
   let valueDiff = maxValue - minValue;
   let num_bins = Math.round(valueDiff / bin_width);
-  // console.log("min : ",minValue);
-  // console.log('max : ',maxValue);
-  // console.log('จำนวนแท่ง histrogram',num_bins);
+
   if (num_bins < 5) bin_width = Math.round(valueDiff / 5);
   if (num_bins > 20) bin_width = Math.round(valueDiff / 20);
 
-  let popNum = calPopNumber(value);
-  let Inc = _6sd / 100;
-  let normDist = { x: [], y: [] };
+  // ND PPK
+  let Inc_PPK = _6sd_PPK / 100;
+  let normDist_PPK = { x: [], y: [] };
 
   for (let i = 0; i < 101; i++) {
-    let x = mean - 3 * sd + i * Inc;
+    let x = mean - 3 * sd_PPK + i * Inc_PPK;
     x = parseFloat(x.toFixed(2));
-    let nomal = normalDistribution(x, mean, sd);
+    let nomal = normalDistribution(x, mean, sd_PPK);
     nomal = parseFloat(nomal.toFixed(6));
-    normDist.x.push(x);
-    normDist.y.push(nomal);
+    normDist_PPK.x.push(x);
+    normDist_PPK.y.push(nomal);
   }
-  // console.log(normDist);
+
+  // ND CPK
+  let Inc_CPK = _6sd_CPK / 100;
+  let normDist_CPK = { x: [], y: [] };
+
+  for (let i = 0; i < 101; i++) {
+    let x = mean - 3 * sd_CPK + i * Inc_CPK;
+    x = parseFloat(x.toFixed(2));
+    let nomal = normalDistribution(x, mean, sd_CPK);
+    nomal = parseFloat(nomal.toFixed(6));
+    normDist_CPK.x.push(x);
+    normDist_CPK.y.push(nomal);
+  }
+
+  // console.log(normDist_CPK);
 
   let histogramChart = {
     x: value,
     type: "histogram",
     name: "Histogram",
     marker: {
-      color: "rgba(255, 100, 100, 0.7)",
+      color: "#adadad98",
+      line: {
+        color: "#969696", // Change the border color
+        width: 1, // Change the border width
+      },
     },
     yaxis: "y",
     xbins: {
@@ -211,7 +258,7 @@ function genChart(value, M = null, SD = null, lcl = null, ucl = null) {
     y: [minCase, maxFrequency, null, minCase, maxFrequency],
   };
 
-  let chart_Histrogram_CL = {
+  let chart_Histogram_CL = {
     type: "scatter",
     x: CL_Histogram.x,
     y: CL_Histogram.y,
@@ -226,25 +273,43 @@ function genChart(value, M = null, SD = null, lcl = null, ucl = null) {
     },
   };
 
-  let chart_NormalDistribution = {
+  let chart_NormalDistribution_PPK = {
     type: "scatter",
-    x: normDist.x,
-    y: normDist.y,
+    x: normDist_PPK.x,
+    y: normDist_PPK.y,
     mode: "lines",
-    name: "nomal distribution",
+    name: "ND PPK",
     showlegend: true,
     yaxis: "y2",
     line: {
-      color: "yellow",
-      width: 1.5,
+      // color: "rgba(255, 100, 100, 0.7)",
+      color: "black",
+      width: 3,
+      dash: "dash",
+
+    },
+  };
+
+  let chart_NormalDistribution_CPK = {
+    type: "scatter",
+    x: normDist_CPK.x,
+    y: normDist_CPK.y,
+    mode: "lines",
+    name: "ND CPK",
+    showlegend: true,
+    yaxis: "y2",
+    line: {
+      color: "rgba(255, 100, 100, 0.9)",
+      width: 3,
     },
   };
 
   let histogramChartLayout = {
-    bargap: 0.05,
-    title: "Histogram with Frequency",
+    // bargap: 0.05,
+    // title: false,
+    title: "Proess Capability Report",
     xaxis: {
-      title: "Value",
+      title: false,
       tickmode: "linear",
       tick0: 0,
       dtick: histogramChart.xbins.size,
@@ -269,7 +334,12 @@ function genChart(value, M = null, SD = null, lcl = null, ucl = null) {
 
   Plotly.newPlot(
     "histogramChart",
-    [histogramChart, chart_Histrogram_CL, chart_NormalDistribution],
+    [
+      histogramChart,
+      chart_Histogram_CL,
+      chart_NormalDistribution_PPK,
+      chart_NormalDistribution_CPK,
+    ],
     histogramChartLayout
   );
 }
@@ -302,7 +372,7 @@ $("#btn_change").click((e) => {
 });
 
 $("#ref_search").unbind();
-$("#ref_search").click( (e) => {
+$("#ref_search").click((e) => {
   let ref = $("#input_ref").val();
   value = [];
 
@@ -318,9 +388,9 @@ $("#ref_search").click( (e) => {
 $("#change_data").unbind();
 $("#change_data").click(async (e) => {
   let Mean = $("#show_Mean").val();
-  let SD = $("#show_SD").val();
+  let SD_PPK = $("#show_SD_PPK").val();
   let LCL = $("#show_LCL").val();
   let UCL = $("#show_UCL").val();
   // console.log(value)
-  genChart(value, Mean, SD, LCL, UCL);
+  genChart(value, Mean, SD_PPK, LCL, UCL);
 });

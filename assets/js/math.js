@@ -11,7 +11,7 @@ function calMean(array) {
 
 
 
-function calSD(array) {
+function calSD_PPK(array) {
   const mean = calMean(array);
   const squaredDifferences = array.map((value) => Math.pow(value - mean, 2));
   const variance = calMean(squaredDifferences);

@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const port = 3000;
-// const ipAddress = "127.0.11.11";
 
 // Middleware สำหรับรับข้อมูล JSON
 app.use(express.json());
