@@ -4,6 +4,43 @@ const d2 = 1.128; // มาจากตาราง
 const w = 2;
 $("#input_ref").val(demo);
 
+const socketio = () => {
+  const socket = io.connect(socketHost, {
+    reconnection: true,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 5000,
+    reconnectionAttempts: 99999,
+  });
+
+  socket.on("connect", () => {
+    console.log("connected");
+    socket.emit("joinRoom", `ChartOrder`);
+  });
+
+  socket.on("reconnect", () => {
+    console.log(`reconnect`);
+    socket.emit("joinRoom", `ChartOrder`);
+  });
+  socket.on("connect_error", (err) => {
+    console.log(`connect_error due to ${err.message}`);
+  });
+
+  socket.on("check-connect", (msg) => {
+    console.log(msg);
+  });
+
+  socket.on("chart-update", (msg) => {
+    console.log(msg);
+    let ref = $("#input_ref").val();
+    console.log(ref)
+    start(ref);
+  });
+  socket.on("disconnect", () => {
+    console.log("disconnectd");
+    window.setTimeout(socket.connect(), 5000);
+  });
+};
+
 function genChart(value, M = null, SD_PPK = null, lcl = null, ucl = null) {
   if (M) M = parseFloat(M);
   if (SD_PPK) SD_PPK = parseFloat(SD_PPK);
@@ -28,6 +65,7 @@ function genChart(value, M = null, SD_PPK = null, lcl = null, ucl = null) {
   let UCL = ucl || parseFloat((mean + rule * sd_PPK).toFixed(2));
 
   let pp = (UCL - LCL) / _6sd_PPK;
+  console.log(pp)
   let ppl = (mean - LCL) / _3sd_PPK;
   let ppu = (UCL - mean) / _3sd_PPK;
   let ppk = Math.min(ppu, ppl);
@@ -42,7 +80,7 @@ function genChart(value, M = null, SD_PPK = null, lcl = null, ucl = null) {
     }
   }
   AMR = sumValueDef / (value.length - w + 1);
-  let sd_CPK = AMR / d2;
+  let sd_CPK = SD_PPK || AMR / d2;
   let _3sd_CPK = 3 * sd_CPK;
   let _6sd_CPK = 6 * sd_CPK;
 
@@ -50,7 +88,7 @@ function genChart(value, M = null, SD_PPK = null, lcl = null, ucl = null) {
   let cpl = (mean - LCL) / _3sd_CPK;
   let cpu = (UCL - mean) / _3sd_CPK;
   let cpk = Math.min(cpu, cpl);
-  console.log("cpk: ", sd_CPK);
+  // console.log("cpk: ", sd_CPK);
 
   // Show
   $("#show_Mean").val(mean.toFixed(2));
@@ -69,8 +107,6 @@ function genChart(value, M = null, SD_PPK = null, lcl = null, ucl = null) {
   $(".show_Cpl").val(cpl.toFixed(2));
   $(".show_Cpu").val(cpu.toFixed(2));
   $(".show_Cpk").val(cpk.toFixed(2));
-
-  
 
   let CL = {
     x: [minCase, maxCase, null, minCase, maxCase],
@@ -286,7 +322,6 @@ function genChart(value, M = null, SD_PPK = null, lcl = null, ucl = null) {
       color: "black",
       width: 3,
       dash: "dash",
-
     },
   };
 
@@ -345,6 +380,7 @@ function genChart(value, M = null, SD_PPK = null, lcl = null, ucl = null) {
 }
 
 async function start(ref) {
+  value = []
   fill_table(ref);
   try {
     let res = await AjaxJasonData(`/masterdata/${ref}`, "get");
@@ -357,40 +393,43 @@ async function start(ref) {
   genChart(value);
 }
 
-start(demo);
+$(async function () {
+  start(demo);
+  socketio();
 
-$("#btn_change").unbind();
-$("#btn_change").click((e) => {
-  let this_btn = $(e.target);
-  if (this_btn.hasClass("toLines")) {
-    this_btn.removeClass("toLines");
-    Plotly.restyle("controlChart", { mode: "lines" }, [0]);
-  } else {
-    this_btn.addClass("toLines");
-    Plotly.restyle("controlChart", { mode: "markers" }, [0]);
-  }
-});
+  $("#btn_change").unbind();
+  $("#btn_change").click((e) => {
+    let this_btn = $(e.target);
+    if (this_btn.hasClass("toLines")) {
+      this_btn.removeClass("toLines");
+      Plotly.restyle("controlChart", { mode: "lines" }, [0]);
+    } else {
+      this_btn.addClass("toLines");
+      Plotly.restyle("controlChart", { mode: "markers" }, [0]);
+    }
+  });
 
-$("#ref_search").unbind();
-$("#ref_search").click((e) => {
-  let ref = $("#input_ref").val();
-  value = [];
-
-  if (ref) {
-    start(ref);
-  } else {
-    fill_table(null);
+  $("#ref_search").unbind();
+  $("#ref_search").click((e) => {
+    let ref = $("#input_ref").val();
     value = [];
-    genChart(value);
-  }
-});
 
-$("#change_data").unbind();
-$("#change_data").click(async (e) => {
-  let Mean = $("#show_Mean").val();
-  let SD_PPK = $("#show_SD_PPK").val();
-  let LCL = $("#show_LCL").val();
-  let UCL = $("#show_UCL").val();
-  // console.log(value)
-  genChart(value, Mean, SD_PPK, LCL, UCL);
+    if (ref) {
+      start(ref);
+    } else {
+      fill_table(null);
+      value = [];
+      genChart(value);
+    }
+  });
+
+  $("#change_data").unbind();
+  $("#change_data").click(async (e) => {
+    let Mean = $("#show_Mean").val();
+    let SD_PPK = $("#show_SD_PPK").val();
+    let LCL = $("#show_LCL").val();
+    let UCL = $("#show_UCL").val();
+    // console.log(value)
+    genChart(value, Mean, SD_PPK, LCL, UCL);
+  });
 });

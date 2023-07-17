@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const { sendData } = require("./libs/socket-io");
 const port = 3000;
 
 // Middleware สำหรับรับข้อมูล JSON
@@ -34,9 +35,14 @@ app.get("/sampling", (req, res) => {
   res.sendFile(__dirname + "/views/sampling.html");
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on ${port}`);
+
+let server = require("http").createServer(app);
+server.listen(port, () => {
+  console.log(`Listening on ${port}`);
 });
+// app.listen(port, () => {
+//   console.log(`Server is running on ${port}`);
+// });
 
 // get data
 app.get("/masterdata", async (req, res) => {
@@ -44,18 +50,21 @@ app.get("/masterdata", async (req, res) => {
     const masterData = await getMasterData();
     res.json(masterData);
   } catch (error) {
-    res.status(500).json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล MasterData" });
+    res
+      .status(500)
+      .json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล MasterData" });
   }
 });
 
 app.get("/masterdata/:ref", async (req, res) => {
- 
   try {
     const ref = req.params.ref;
     const masterData = await getMasterDataByRef(ref);
     res.json(masterData);
   } catch (error) {
-    res.status(500).json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล MasterData" });
+    res
+      .status(500)
+      .json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล MasterData" });
   }
 });
 
@@ -64,7 +73,10 @@ app.post("/masterdata/add", async (req, res) => {
     const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'MasterData'
     if (data.Reference && data.valueData && data.valueDatetime) {
       await addMasterData(data);
-      res.status(200).json({ message: "เพิ่มข้อมูลในตาราง MasterData สำเร็จแล้ว" });
+      sendData("ChartOrder", "chart-update", "reload table");
+      res
+        .status(200)
+        .json({ message: "เพิ่มข้อมูลในตาราง MasterData สำเร็จแล้ว" });
     } else {
       res.status(500).json({ message: "กรุณากรอกข้อมูลให้ครบ" });
     }
@@ -80,7 +92,10 @@ app.post("/masterdata/add/random", async (req, res) => {
     const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'MasterData'
     if (data.Reference && data.valueRandom && data.valueDatetime) {
       await addMasterRandomData(data);
-      res.status(200).json({ message: "เพิ่มข้อมูลในตาราง MasterData สำเร็จแล้ว" });
+      sendData("ChartOrder", "chart-update", "reload table");
+      res
+        .status(200)
+        .json({ message: "เพิ่มข้อมูลในตาราง MasterData สำเร็จแล้ว" });
     } else {
       res.status(500).json({ message: "กรุณากรอกข้อมูลให้ครบ" });
     }
@@ -95,6 +110,8 @@ app.delete("/masterdata/delete/:id", async (req, res) => {
   try {
     const id = req.params.id; // ค่า ID ที่รับเข้ามาในเส้นทาง
     await deleteMasterDataById(id);
+    sendData("ChartOrder", "chart-update", "reload table");
+
     res.send(`ลบข้อมูลในตาราง MasterData สำเร็จแล้ว ID=${id}`);
   } catch (error) {
     res
@@ -102,3 +119,6 @@ app.delete("/masterdata/delete/:id", async (req, res) => {
       .json({ message: "เกิดข้อผิดพลาดในการลบข้อมูลในตาราง MasterData" });
   }
 });
+
+const { socketConnection } = require("./libs/socket-io");
+socketConnection(server)
