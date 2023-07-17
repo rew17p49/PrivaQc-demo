@@ -17,7 +17,7 @@ function name(ar) {
 function calSD_PPK(array) {
   const mean = calMean(array);
   const squaredDifferences = array.map((value) => Math.pow(value - mean, 2));
-  console.log('squ: ',squaredDifferences)
+  // console.log('squ: ',squaredDifferences)
   const variance = calMean(squaredDifferences);
   const standardDeviation = Math.sqrt(variance);
   return standardDeviation;

@@ -32,7 +32,7 @@ const socketio = () => {
   socket.on("chart-update", (msg) => {
     console.log(msg);
     let ref = $("#input_ref").val();
-    console.log(ref)
+    // console.log(ref)
     start(ref);
   });
   socket.on("disconnect", () => {
@@ -65,7 +65,7 @@ function genChart(value, M = null, SD_PPK = null, lcl = null, ucl = null) {
   let UCL = ucl || parseFloat((mean + rule * sd_PPK).toFixed(2));
 
   let pp = (UCL - LCL) / _6sd_PPK;
-  console.log(pp)
+  // console.log(pp)
   let ppl = (mean - LCL) / _3sd_PPK;
   let ppu = (UCL - mean) / _3sd_PPK;
   let ppk = Math.min(ppu, ppl);
