@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>IMCT_DEMO</title>
+  <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/datatables.min.css">
+</head>
+
+<body>
+  <!-- NavBar -->
+  <nav class="navbar navbar-priva">
+    <div class="container-fluid">
+      <a class="navbar-brand">
+        <img class="logo" src="img/Priva Logo.png" alt="">
+      </a>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/">Ouality control</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/sampling">Sampling data</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Body -->
+  <div class="container py-4">
+    <div class="row">
+      <div class="col-12 col-lg-6 mb-3 mb-lg-0 ">
+        <div class="card shadow p-2">
+          <div class="card-body">
+            <h4 class="mb-3">Process Performance Index</h4>
+            <ul>
+
+              <li class="mb-3">
+                <p class="fw-bold">การหาค่าเฉลี่ยของชุดข้อมูล (x̄)</p>
+                <div class="text-center mb-2">
+                  <img class="solution" src="/img/solution-mean.png" alt="">
+                </div>
+                <p>Σ คือ ผลรวมของสมาชิกในชุดข้อมูล</p>
+                <p>x คือ ค่าข้อมูลแต่ละตัวในชุดข้อมูล</p>
+                <p>n คือ จำนวนข้อมูลในชุด</p>
+              </li>
+
+              <li class="mb-3">
+                <p class="fw-bold">การหาค่าเบี่ยงเบนมาตรฐาน (SD)</p>
+                <div class="text-center mb-2">
+                  <img class="solution" src="/img/solution-sd.png" alt="">
+                </div>
+                <p>Σ คือ ผลรวมของสมาชิกในชุดข้อมูล</p>
+                <p>x คือ ค่าข้อมูลแต่ละตัวในชุดข้อมูล</p>
+                <p>x̄ คือ ค่าเฉลี่ยของชุดข้อมูล</p>
+                <p>n คือ จำนวนข้อมูลในชุด</p>
+              </li>
+
+              <li class="mb-3">
+                <p class="fw-bold">การหาค่า PPL </p>
+                <div class="text-center mb-2">
+                  <img class="solution" src="/img/solution-PPL.png" alt="">
+                </div>
+
+                <p>UCL คือ Upper Control Limit หรือขีดความสามารถสูงสุดในกระบวนการควบคุมคุณภาพ</p>
+                <p>x̄ คือ ค่าเฉลี่ยของชุดข้อมูล</p>
+                <p>SD คือ ค่าเบี่ยงเบนมาตรฐาน</p>
+              </li>
+
+              <li class="mb-3">
+                <p class="fw-bold">การหาค่า PPU </p>
+                <div class="text-center mb-2">
+                  <img class="solution" src="/img/solution-PPU.png" alt="">
+                </div>
+                <p>LCL คือ Lower Control Limit หรือขีดจำกัดต่ำสุดในกระบวนการควบคุมคุณภาพ</p>
+                <p>x̄ คือ ค่าเฉลี่ยของชุดข้อมูล</p>
+                <p>SD คือ ค่าเบี่ยงเบนมาตรฐาน</p>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/jquery/dist/jquery.min.js"></script>
+  <script src="/js/datatables.min.js"></script>
+
+</body>
+
+
+</html>

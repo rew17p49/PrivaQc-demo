@@ -175,6 +175,10 @@ $("#random_form,#one_form").submit(async function (e) {
       var randomNumber = Math.floor(Math.random() * Def) + parseInt(min); // สุ่มตัวเลขระหว่าง 20 - 40
       value.push(randomNumber);
     }
+    value.length == 0 ? value = '' : value = value
+    console.log(value)
+    
+    // console.log(value.length == 0)
     let data = {
       Reference: reference,
       valueRandom: value,

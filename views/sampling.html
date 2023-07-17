@@ -51,18 +51,24 @@
           <div class="collapse multi-collapse show" id="Send_Data">
             <div class="card shadow p-2 mb-3">
               <div class="card-body">
-                <div class="input-group mb-3 w-25">
-                  <span class="input-group-text">Ref.</span>
-                  <input type="text" class="form-control" placeholder="reference" id="input_ref">
+                <div class="row mb-3">
+                  <div class="col-12 col-xl-3">
+                    <div class="input-group">
+                      <span class="input-group-text">Ref.</span>
+                      <input type="text" class="form-control" placeholder="reference" id="input_ref">
+                    </div>
+                  </div>
                 </div>
+                
                 <div class="row">
-                  <div class="col-12 col-xl-6">
+                  
+                  <div class="col-12 col-xl-6 mb-3 mb-xl-0">
                     <div class="box">
                       <h4 class="mb-3">One Data</h4>
                       <form action="" id="one_form">
                         <div class="mb-3">
                           <input type="number" class="form-control form-control-sm" name="one_data" id="input_one_data"
-                            placeholder="110">
+                            placeholder="sampling data">
                         </div>
                         <div class="text-end">
                           <button class="btn btn-sm btn-success">send</button>
@@ -78,12 +84,12 @@
                           <div class="w-50 me-3">
                             <label for="input_random_min" class="form-label form-label-sm">Min</label>
                             <input type="number" class="form-control form-control-sm" name="random_min"
-                              id="input_random_min" placeholder="110">
+                              id="input_random_min" placeholder="minimum random data">
                           </div>
                           <div class="w-50">
                             <label for="input_random_max" class="form-label form-label-sm">Max</label>
                             <input type="number" class="form-control form-control-sm" name="random_max"
-                              id="input_random_max" placeholder="140">
+                              id="input_random_max" placeholder="maximum random data">
                           </div>
                         </div>
 

@@ -10,7 +10,7 @@ const config = {
   // test
   // user: "sa",
   // password: "P@ssw0rd",
-  // server: "119.59.96.61",
+  // server: "192.169.1.7",
   // database: "IMCT_DEMO",
   
   options: {

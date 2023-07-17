@@ -35,6 +35,10 @@ app.get("/sampling", (req, res) => {
   res.sendFile(__dirname + "/views/sampling.html");
 });
 
+app.get("/ref", (req, res) => {
+  res.sendFile(__dirname + "/views/reference.html");
+});
+
 
 let server = require("http").createServer(app);
 server.listen(port, () => {
@@ -71,7 +75,7 @@ app.get("/masterdata/:ref", async (req, res) => {
 app.post("/masterdata/add", async (req, res) => {
   try {
     const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'MasterData'
-    if (data.Reference && data.valueData && data.valueDatetime) {
+    if (data.Reference  && data.valueData && data.valueDatetime) {
       await addMasterData(data);
       sendData("ChartOrder", "chart-update", "reload table");
       res
@@ -88,8 +92,10 @@ app.post("/masterdata/add", async (req, res) => {
 });
 
 app.post("/masterdata/add/random", async (req, res) => {
+
   try {
     const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'MasterData'
+    console.log(data)
     if (data.Reference && data.valueRandom && data.valueDatetime) {
       await addMasterRandomData(data);
       sendData("ChartOrder", "chart-update", "reload table");

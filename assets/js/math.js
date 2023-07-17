@@ -9,17 +9,15 @@ function calMean(array) {
   return mean;
 }
 
-function name(ar) {
-  
-}
-
+function name(ar) {}
 
 function calSD_PPK(array) {
-  const mean = calMean(array);
-  const squaredDifferences = array.map((value) => Math.pow(value - mean, 2));
+  let mean = calMean(array);
+  let squaredDifferences = array.map((value) => Math.pow(value - mean, 2));
   // console.log('squ: ',squaredDifferences)
-  const variance = calMean(squaredDifferences);
-  const standardDeviation = Math.sqrt(variance);
+  let sum = calSum(squaredDifferences);
+  let variance = sum / (squaredDifferences.length - 1);
+  let standardDeviation = Math.sqrt(variance);
   return standardDeviation;
 }
 
@@ -49,7 +47,7 @@ function calPopNumber(array) {
 
   return {
     number: popularNumber,
-    count: maxCount
+    count: maxCount,
   };
 }
 
@@ -93,7 +91,7 @@ function SwalAlert(txt, title) {
   let action = title.toUpperCase();
   let Text;
   if (action == "ERROR") {
-    console.log(txt)
+    console.log(txt);
     if (txt.responseJSON.message) Text = txt.responseJSON.message;
     Swal.fire({
       position: "center",
@@ -117,12 +115,9 @@ function SwalAlert(txt, title) {
   }
 }
 
-
 // // ตัวอย่างการใช้งาน
 // const numbers = [1, 2, 3, 2, 2, 4, 5, 4, 2];
 // const popularNumberInfo = calPopNumber(numbers);
 
 // console.log(popularNumberInfo.number); // Output: 2
 // console.log(popularNumberInfo.count); // Output: 4
-
-

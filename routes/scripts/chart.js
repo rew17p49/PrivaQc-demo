@@ -1,4 +1,4 @@
-var value = [];
+let value = [];
 const demo = "demo";
 const d2 = 1.128; // มาจากตาราง
 const w = 2;
@@ -380,7 +380,8 @@ function genChart(value, M = null, SD_PPK = null, lcl = null, ucl = null) {
 }
 
 async function start(ref) {
-  value = []
+
+  value.splice(0);
   fill_table(ref);
   try {
     let res = await AjaxJasonData(`/masterdata/${ref}`, "get");
@@ -393,7 +394,7 @@ async function start(ref) {
   genChart(value);
 }
 
-$(async function () {
+// $(function () {
   start(demo);
   socketio();
 
@@ -412,13 +413,12 @@ $(async function () {
   $("#ref_search").unbind();
   $("#ref_search").click((e) => {
     let ref = $("#input_ref").val();
-    value = [];
 
     if (ref) {
       start(ref);
     } else {
       fill_table(null);
-      value = [];
+      value = []
       genChart(value);
     }
   });
@@ -432,4 +432,4 @@ $(async function () {
     // console.log(value)
     genChart(value, Mean, SD_PPK, LCL, UCL);
   });
-});
+// });
