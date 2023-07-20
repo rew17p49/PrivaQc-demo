@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&#x033F;x - R Chart</title>
+  <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/datatables.min.css">
+  <style>
+    table {
+      border-collapse: collapse;
+      /* width: 400px; */
+    }
+
+    th {
+      width: 50px;
+    }
+
+    th,
+    td {
+      border: 1px solid rgb(112, 112, 112);
+      padding: 5px;
+      text-align: center;
+    }
+
+    th {
+      background-color: lightgray;
+    }
+
+    #col_0 {
+      background-color: lightgray;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container py-4">
+    <div class="row">
+      <div class="col-12 mb-3">
+        <table id="tbXBar" class="w-100"></table>
+      </div>
+      <div class="col-12 mb-3">
+        <div class="card shadow">
+          <div class="card-body">
+            <div class="" id="xBarChart"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="card shadow">
+          <div class="card-body">
+            <div class="" id="RChart"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/jquery/dist/jquery.min.js"></script>
+  <script src="/js/datatables.min.js"></script>
+  <script src="/js/plotly.min.js"></script>
+  <script src="/js/math.js"></script>
+  <script src="/js/swalalert2.js"></script>
+  <script src="js/socket.io.min.js"></script>
+  <script src="js/sockethost.js"></script>
+  <script src="/scripts/x_bar_table.js"></script>
+  <script src="/scripts/x_bar_R_Chart.js"></script>
+
+</body>
+
+</html>

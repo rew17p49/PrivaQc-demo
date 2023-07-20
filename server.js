@@ -20,6 +20,10 @@ const {
   addMasterData,
   addMasterRandomData,
   deleteMasterDataById,
+  getXBarData,
+  getXBarDataByRef,
+  addXBarData,
+  addXBarRandomData,
 } = require("./database");
 
 app.use((req, res, next) => {
@@ -39,6 +43,15 @@ app.get("/ref", (req, res) => {
   res.sendFile(__dirname + "/views/reference.html");
 });
 
+app.get("/xbar", (req, res) => {
+  res.sendFile(__dirname + "/views/xbarChart.html");
+});
+
+app.get("/test", (req, res) => {
+  res.sendFile(__dirname + "/views/test.html");
+});
+
+
 
 let server = require("http").createServer(app);
 server.listen(port, () => {
@@ -48,7 +61,7 @@ server.listen(port, () => {
 //   console.log(`Server is running on ${port}`);
 // });
 
-// get data
+// get Masterdata
 app.get("/masterdata", async (req, res) => {
   try {
     const masterData = await getMasterData();
@@ -125,6 +138,51 @@ app.delete("/masterdata/delete/:id", async (req, res) => {
       .json({ message: "เกิดข้อผิดพลาดในการลบข้อมูลในตาราง MasterData" });
   }
 });
+
+// Xbar
+
+app.get("/xbardata", async (req, res) => {
+  try {
+    const XBar = await getXBarData();
+    res.json(XBar);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล xbar" });
+  }
+});
+app.get("/xbardata/:ref", async (req, res) => {
+  try {
+    const ref = req.params.ref;
+    const XBar = await getXBarDataByRef(ref);
+    res.json(XBar);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล X-Bar" });
+  }
+});
+
+app.post("/xbardata/add", async (req, res) => {
+  try {
+    const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'xbardata'
+    if (data.Reference  && data.valueArray && data.valueDatetime) {
+      await addXBarData(data);
+      // sendData("ChartOrder", "chart-update", "reload table");
+      res
+        .status(200)
+        .json({ message: "เพิ่มข้อมูลในตาราง Xbardata สำเร็จแล้ว" });
+    } else {
+      res.status(500).json({ message: "กรุณากรอกข้อมูลให้ครบ" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "เกิดข้อผิดพลาดในการเพิ่มข้อมูลในตาราง Xbardata" });
+  }
+});
+
+
 
 const { socketConnection } = require("./libs/socket-io");
 socketConnection(server)

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- เพิ่มลิงก์ไปยังไฟล์ CSS ของ DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <!-- เพิ่มลิงก์ไปยังไฟล์ CSS ของ FixedColumns -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.3.4/css/fixedColumns.dataTables.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- เพิ่มไฟล์ JavaScript ของ DataTables -->
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <!-- เพิ่มไฟล์ JavaScript ของ FixedColumns -->
+    <script src="https://cdn.datatables.net/fixedcolumns/3.3.4/js/dataTables.fixedColumns.min.js"></script>
+</head>
+<body>
+
+<!-- ตารางที่มีหัวตารางอยู่ด้านข้าง -->
+<table id="example" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>หัวคอลัมน์ 1</th>
+            <th>หัวคอลัมน์ 2</th>
+            <th>หัวคอลัมน์ 3</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>เนื้อหาคอลัมน์ 1</td>
+            <td>เนื้อหาคอลัมน์ 2</td>
+            <td>เนื้อหาคอลัมน์ 3</td>
+        </tr>
+        <!-- กรอกข้อมูลเพิ่มเติมตามต้องการ -->
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function() {
+        // ใช้ DataTables และ FixedColumns เพื่อเปลี่ยนตารางให้เป็นรูปแบบที่คุณต้องการ
+        var table = $('#example').DataTable({
+            scrollY:        '300px', // ความสูงของตาราง
+            scrollX:        '300px', // ความกว้างของตาราง
+            scrollCollapse: true,
+            paging:         false // ปิดการแบ่งหน้าของตาราง (ถ้าต้องการ)
+        });
+
+        new $.fn.dataTable.FixedColumns(table, {
+            leftColumns: 1 // กำหนดให้มีหัวตารางอยู่ด้านซ้าย 1 คอลัมน์
+        });
+    });
+</script>
+
+</body>
+</html>

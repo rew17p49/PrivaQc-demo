@@ -152,8 +152,8 @@ $("#btn_submit").click((e) => {
   myChart.update();
 });
 
-$("#random_form,#one_form").unbind();
-$("#random_form,#one_form").submit(async function (e) {
+$("#random_form,#one_form,#random_xbar_form,#one_xbar_form").unbind();
+$("#random_form,#one_form,#random_xbar_form,#one_xbar_form").submit(async function (e) {
   e.preventDefault(); // ป้องกันการโหลดหน้าเว็บใหม่หลังจากการส่งฟอร์ม
 
   var formData = $(this).serializeArray(); // ดึงข้อมูลฟอร์มเป็นอาร์เรย์
@@ -164,6 +164,7 @@ $("#random_form,#one_form").submit(async function (e) {
   });
 
   let reference = $("#input_ref").val();
+  let reference_XBar = $("#input_ref_xbar").val();
   let time = dataTimeNow();
   if (e.target.id == "random_form") {
     let length = formJasonData.random_quantity;
@@ -175,9 +176,9 @@ $("#random_form,#one_form").submit(async function (e) {
       var randomNumber = Math.floor(Math.random() * Def) + parseInt(min); // สุ่มตัวเลขระหว่าง 20 - 40
       value.push(randomNumber);
     }
-    value.length == 0 ? value = '' : value = value
-    console.log(value)
-    
+    value.length == 0 ? (value = "") : (value = value);
+    console.log(value);
+
     // console.log(value.length == 0)
     let data = {
       Reference: reference,
@@ -185,11 +186,7 @@ $("#random_form,#one_form").submit(async function (e) {
       valueDatetime: time,
     };
     try {
-      let res = await AjaxJasonData(
-        `/masterdata/add/random`,
-        "post",
-        data
-      );
+      let res = await AjaxJasonData(`/masterdata/add/random`, "post", data);
       SwalAlert(res, "upload");
     } catch (error) {
       SwalAlert(error, "error");
@@ -206,19 +203,63 @@ $("#random_form,#one_form").submit(async function (e) {
     } catch (error) {
       SwalAlert(error, "error");
     }
+  } else if (e.target.id == "random_xbar_form") {
+    let length = formJasonData.random_quantity;
+    let range = formData.random_range;
+    let min = parseInt(formJasonData.random_min);
+    let max = parseInt(formJasonData.random_max);
+    let Def = Math.abs(max - min + 1);
+    let value = [];
+    for (var i = 0; i < length; i++) {
+      let dataGroup = [];
+      for (let j = 0; j < range; j++) {
+        var randomNumber = Math.floor(Math.random() * Def) + parseInt(min); // สุ่มตัวเลขระหว่าง 20 - 40
+        dataGroup.push(randomNumber);
+      }
+      value.push(dataGroup);
+    }
+
+    let data = {
+      Reference: reference_XBar,
+      valueRandom: value,
+      valueDatetime: time,
+    };
+
+    try {
+      let res = await AjaxJasonData(`/xbardata/add/random`, "post", data);
+      SwalAlert(res, "upload");
+    } catch (error) {
+      SwalAlert(error, "error");
+    }
   }
 });
 
 $("#btn_toggle_cp").unbind();
 $("#btn_toggle_cp").click(() => {
-  if ($("#Send_Data").hasClass("show")) {
-    $("#Send_Data").toggleClass("show");
+  if ($("#Send_Data_QC").hasClass("show")) {
+    $("#Send_Data_QC").toggleClass("show");
+  }
+  if ($("#Send_Data_Xbar").hasClass("show")) {
+    $("#Send_Data_Xbar").toggleClass("show");
   }
 });
 
-$("#btn_toggle_send").unbind();
-$("#btn_toggle_send").click(() => {
+$("#btn_toggle_send_QC").unbind();
+$("#btn_toggle_send_QC").click(() => {
   if ($("#CP_CPK").hasClass("show")) {
     $("#CP_CPK").toggleClass("show");
+  }
+  if ($("#Send_Data_Xbar").hasClass("show")) {
+    $("#Send_Data_Xbar").toggleClass("show");
+  }
+});
+
+$("#btn_toggle_send_Xbar").unbind();
+$("#btn_toggle_send_Xbar").click(() => {
+  if ($("#CP_CPK").hasClass("show")) {
+    $("#CP_CPK").toggleClass("show");
+  }
+  if ($("#Send_Data_QC").hasClass("show")) {
+    $("#Send_Data_QC").toggleClass("show");
   }
 });

@@ -40,28 +40,32 @@
 
     <div class="row">
       <p>
-        <button id="btn_toggle_send" class="btn btn-primary" type="button" data-bs-toggle="collapse"
-          data-bs-target="#Send_Data" aria-expanded="false" aria-controls="Send_Data">Send Data</button>
+        <button id="btn_toggle_send_QC" class="btn btn-primary" type="button" data-bs-toggle="collapse"
+          data-bs-target="#Send_Data_QC" aria-expanded="false" aria-controls="Send_Data_QC">Data QC Chart</button>
+        <button id="btn_toggle_send_Xbar" class="btn btn-primary" type="button" data-bs-toggle="collapse"
+          data-bs-target="#Send_Data_Xbar" aria-expanded="false" aria-controls="Send_Data_Xbar">Data X-Bar Chart</button>
         <button id="btn_toggle_cp" class="btn btn-primary" data-bs-toggle="collapse" href="#CP_CPK" role="button"
           aria-expanded="false" aria-controls="CP_CPK">CP / CPK Simulator</button>
       </p>
 
       <div class="row">
         <div class="col-12">
-          <div class="collapse multi-collapse show" id="Send_Data">
+          <div class="collapse multi-collapse show" id="Send_Data_QC">
             <div class="card shadow p-2 mb-3">
               <div class="card-body">
                 <div class="row mb-3">
                   <div class="col-12 col-xl-3">
+                    <h2 class="mb-2">QC Chart</h2>
+
                     <div class="input-group">
                       <span class="input-group-text">Ref.</span>
                       <input type="text" class="form-control" placeholder="reference" id="input_ref">
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="row">
-                  
+
                   <div class="col-12 col-xl-6 mb-3 mb-xl-0">
                     <div class="box">
                       <h4 class="mb-3">One Data</h4>
@@ -98,6 +102,80 @@
                           <input type="number" class="form-control form-control-sm" name="random_quantity"
                             id="input_random_quantity" min="0" max="100" placeholder="0 - 100">
                         </div>
+                        <div class="text-end">
+                          <button class="btn btn-sm btn-success" type="submit">send</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="collapse multi-collapse" id="Send_Data_Xbar">
+            <div class="card shadow p-2 mb-3">
+              <div class="card-body">
+                
+                <div class="row mb-3">
+                  <div class="col-12 col-xl-3">
+                    <h2 class="mb-2">X-Bar Chart</h2>
+
+                    <div class="input-group">
+                      <span class="input-group-text">Ref.</span>
+                      <input type="text" class="form-control" placeholder="reference" id="input_ref">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+
+                  <div class="col-12 col-xl-6 mb-3 mb-xl-0">
+                    <div class="box">
+                      <h4 class="mb-3">One Data</h4>
+                      <form action="" id="one_xbar_form">
+                        <div class="mb-3">
+                          <input type="number" class="form-control form-control-sm" name="one_data" id="input_one_data_Xbar"
+                            placeholder="sampling data">
+                        </div>
+                        <div class="text-end">
+                          <button class="btn btn-sm btn-success">send</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="col-12 col-xl-6">
+                    <div class="box">
+                      <h4 class="mb-3">Random Data</h4>
+                      <form action="" id="random_xbar_form">
+                        <div class="mb-3 d-flex">
+                          <div class="w-50 me-3">
+                            <label for="input_random_min_xbar" class="form-label form-label-sm">Min</label>
+                            <input type="number" class="form-control form-control-sm" name="random_min"
+                              id="input_random_min_xbar" placeholder="minimum random data">
+                          </div>
+                          <div class="w-50">
+                            <label for="input_random_max_xbar" class="form-label form-label-sm">Max</label>
+                            <input type="number" class="form-control form-control-sm" name="random_max"
+                              id="input_random_max_xbar" placeholder="maximum random data">
+                          </div>
+                        </div>
+                        <div class="mb-3 d-flex">
+                          <div class="w-50 me-3">
+                            <label for="input_random_range_xbar" class="form-label form-label-sm">Range</label>
+                            <input type="number" class="form-control form-control-sm" name="random_range"
+                              id="input_random_range_xbar" min="0" max="100" placeholder="1 - 25">
+                          </div>
+                          <div class="w-50">
+                            <label for="input_random_quantity_xbar" class="form-label form-label-sm">Quantity</label>
+                            <input type="number" class="form-control form-control-sm" name="random_quantity"
+                              id="input_random_quantity_xbar" min="0" max="100" placeholder="0 - 100">
+                          </div>
+                        </div>
+
+                        
                         <div class="text-end">
                           <button class="btn btn-sm btn-success" type="submit">send</button>
                         </div>

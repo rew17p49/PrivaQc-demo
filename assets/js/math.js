@@ -1,15 +1,14 @@
 function calSum(array) {
-  let sum = array.reduce((total, num) => total + num, 0);
+  let sum = array.reduce((total, num) => parseFloat(total) + parseFloat(num), 0);
+  
   return sum;
 }
 
 function calMean(array) {
   let sum = calSum(array);
-  let mean = sum / array.length;
+  let mean = parseFloat(sum) / parseFloat(array.length);
   return mean;
 }
-
-function name(ar) {}
 
 function calSD_PPK(array) {
   let mean = calMean(array);

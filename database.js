@@ -35,7 +35,7 @@ async function connectToDatabase() {
 // เรียกใช้ฟังก์ชันเพื่อเชื่อมต่อกับฐานข้อมูล
 connectToDatabase();
 
-// ฟังก์ชันสำหรับเรียกข้อมูลจากตาราง 'MasterData'
+// 'MasterData'
 async function getMasterData() {
   try {
     const pool = await sql.connect(config);
@@ -108,6 +108,62 @@ async function deleteMasterDataById(id) {
   }
 }
 
+// 'Xbar-Chart'
+async function getXBarData() {
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool.request().query("SELECT * FROM XBarChart");
+    return result.recordset;
+  } catch (error) {
+    console.log("เกิดข้อผิดพลาดในการเรียกข้อมูลจากตาราง XBarChart:", error);
+    return [];
+  }
+}
+async function getXBarDataByRef(ref) {
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool
+      .request()
+      .query(`SELECT * FROM XBarChart WHERE Reference = '${ref}'`);
+    return result.recordset;
+  } catch (error) {
+    console.log("เกิดข้อผิดพลาดในการเรียกข้อมูลจากตาราง XBarChart:", error);
+    return [];
+  }
+}
+
+async function addXBarData(data) {
+  try {
+    let { Reference,valueArray,valueDatetime } = data;
+    valueDatetime = valueDatetime.replace(",", " ");
+    const pool = await sql.connect(config);
+    const query = `INSERT INTO XBarChart (Reference,valueArray,valueDatetime) 
+      VALUES ( N'${Reference}',N'${valueArray}', '${valueDatetime}')`; // เปลี่ยน column1, column2, column3 เป็นชื่อคอลัมน์ที่เหมาะสมในตาราง 'XBarChart'
+    const result = await pool.request().query(query);
+    console.log("เพิ่มข้อมูลในตาราง XBarChart สำเร็จแล้ว");
+  } catch (error) {
+    console.log("เกิดข้อผิดพลาดในการเพิ่มข้อมูลในตาราง XBarChart:", error);
+  }
+}
+
+async function addXBarRandomData(data) {
+  try {
+    let { Reference,valueArray,valueDatetime } = data;
+    valueDatetime = valueDatetime.replace(",", " ");
+    const pool = await sql.connect(config);
+
+    for (let i = 0; i < valueArray.length; i++) {
+      const query = `INSERT INTO XBarChart (Reference,valueData, valueDatetime) 
+      VALUES ( N'${Reference}',N'${valueArray[i]}', '${valueDatetime}')`; // เปลี่ยน column1, column2, column3 เป็นชื่อคอลัมน์ที่เหมาะสมในตาราง 'XBarChart'
+      const result = await pool.request().query(query);
+    }
+
+    console.log("เพิ่มข้อมูลในตาราง XBarChart สำเร็จแล้ว");
+  } catch (error) {
+    console.log("เกิดข้อผิดพลาดในการเพิ่มข้อมูลในตาราง XBarChart:", error);
+  }
+}
+
 module.exports = {
   sql,
   getMasterData,
@@ -115,4 +171,8 @@ module.exports = {
   addMasterData,
   addMasterRandomData,
   deleteMasterDataById,
+  getXBarData,
+  getXBarDataByRef,
+  addXBarData,
+  addXBarRandomData,
 };
