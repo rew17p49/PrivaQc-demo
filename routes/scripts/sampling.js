@@ -153,86 +153,105 @@ $("#btn_submit").click((e) => {
 });
 
 $("#random_form,#one_form,#random_xbar_form,#one_xbar_form").unbind();
-$("#random_form,#one_form,#random_xbar_form,#one_xbar_form").submit(async function (e) {
-  e.preventDefault(); // ป้องกันการโหลดหน้าเว็บใหม่หลังจากการส่งฟอร์ม
+$("#random_form,#one_form,#random_xbar_form,#one_xbar_form").submit(
+  async function (e) {
+    e.preventDefault(); // ป้องกันการโหลดหน้าเว็บใหม่หลังจากการส่งฟอร์ม
 
-  var formData = $(this).serializeArray(); // ดึงข้อมูลฟอร์มเป็นอาร์เรย์
+    var formData = $(this).serializeArray(); // ดึงข้อมูลฟอร์มเป็นอาร์เรย์
 
-  var formJasonData = {};
-  $.each(formData, function (index, field) {
-    formJasonData[field.name] = field.value; // สร้าง JSON object จากข้อมูลฟอร์ม
-  });
+    var formJasonData = {};
+    $.each(formData, function (index, field) {
+      formJasonData[field.name] = field.value; // สร้าง JSON object จากข้อมูลฟอร์ม
+    });
 
-  let reference = $("#input_ref").val();
-  let reference_XBar = $("#input_ref_xbar").val();
-  let time = dataTimeNow();
-  if (e.target.id == "random_form") {
-    let length = formJasonData.random_quantity;
-    let min = parseInt(formJasonData.random_min);
-    let max = parseInt(formJasonData.random_max);
-    let Def = Math.abs(max - min + 1);
-    let value = [];
-    for (var i = 0; i < length; i++) {
-      var randomNumber = Math.floor(Math.random() * Def) + parseInt(min); // สุ่มตัวเลขระหว่าง 20 - 40
-      value.push(randomNumber);
-    }
-    value.length == 0 ? (value = "") : (value = value);
-    console.log(value);
+    let reference = $("#input_ref").val();
+    let reference_XBar = $("#input_ref_xbar").val();
+    let time = dataTimeNow();
 
-    // console.log(value.length == 0)
-    let data = {
-      Reference: reference,
-      valueRandom: value,
-      valueDatetime: time,
-    };
-    try {
-      let res = await AjaxJasonData(`/masterdata/add/random`, "post", data);
-      SwalAlert(res, "upload");
-    } catch (error) {
-      SwalAlert(error, "error");
-    }
-  } else if (e.target.id == "one_form") {
-    let data = {
-      Reference: reference,
-      valueData: formJasonData.one_data,
-      valueDatetime: time,
-    };
-    try {
-      let res = await AjaxJasonData(`/masterdata/add`, "post", data);
-      SwalAlert(res, "upload");
-    } catch (error) {
-      SwalAlert(error, "error");
-    }
-  } else if (e.target.id == "random_xbar_form") {
-    let length = formJasonData.random_quantity;
-    let range = formData.random_range;
-    let min = parseInt(formJasonData.random_min);
-    let max = parseInt(formJasonData.random_max);
-    let Def = Math.abs(max - min + 1);
-    let value = [];
-    for (var i = 0; i < length; i++) {
-      let dataGroup = [];
-      for (let j = 0; j < range; j++) {
+    if (e.target.id == "random_form") {
+      let length = formJasonData.random_quantity;
+      let min = parseInt(formJasonData.random_min);
+      let max = parseInt(formJasonData.random_max);
+      let Def = Math.abs(max - min + 1);
+      let value = [];
+      for (var i = 0; i < length; i++) {
         var randomNumber = Math.floor(Math.random() * Def) + parseInt(min); // สุ่มตัวเลขระหว่าง 20 - 40
-        dataGroup.push(randomNumber);
+        value.push(randomNumber);
       }
-      value.push(dataGroup);
-    }
+      value.length == 0 ? (value = "") : (value = value);
+      console.log(value);
 
-    let data = {
-      Reference: reference_XBar,
-      valueRandom: value,
-      valueDatetime: time,
-    };
+      // console.log(value.length == 0)
+      let data = {
+        Reference: reference,
+        valueRandom: value,
+        valueDatetime: time,
+      };
+      try {
+        let res = await AjaxJasonData(`/masterdata/add/random`, "post", data);
+        SwalAlert(res, "upload");
+      } catch (error) {
+        SwalAlert(error, "error");
+      }
+    } else if (e.target.id == "one_form") {
+      let data = {
+        Reference: reference,
+        valueData: formJasonData.one_data,
+        valueDatetime: time,
+      };
+      try {
+        let res = await AjaxJasonData(`/masterdata/add`, "post", data);
+        SwalAlert(res, "upload");
+      } catch (error) {
+        SwalAlert(error, "error");
+      }
+    } else if (e.target.id == "random_xbar_form") {
+      let length = formJasonData.random_quantity;
+      let range = formJasonData.random_range;
+      let min = parseInt(formJasonData.random_min);
+      let max = parseInt(formJasonData.random_max);
+      let Def = Math.abs(max - min + 1);
+      let value = [];
+      for (var i = 0; i < length; i++) {
+        let dataGroup = [];
+        for (let j = 0; j < range; j++) {
+          var randomNumber = Math.floor(Math.random() * Def) + parseInt(min); // สุ่มตัวเลขระหว่าง 20 - 40
+          dataGroup.push(randomNumber);
+        }
+        value.push(dataGroup);
+      }
 
-    try {
-      let res = await AjaxJasonData(`/xbardata/add/random`, "post", data);
-      SwalAlert(res, "upload");
-    } catch (error) {
-      SwalAlert(error, "error");
+      let data = {
+        Reference: reference_XBar,
+        valueRandom: JSON.stringify(value),
+        valueDatetime: time,
+      };
+
+      try {
+        let res = await AjaxJasonData(`/xbardata/add/random`, "post", data);
+        SwalAlert(res, "upload");
+      } catch (error) {
+        SwalAlert(error, "error");
+      }
+    } else if (e.target.id == "one_xbar_form") {
+      let array = [];
+      array.push(parseFloat(formJasonData.one_data));
+      let str = `[${formJasonData.one_data}]`;
+
+      let data = {
+        Reference: reference_XBar,
+        valueData: str,
+        valueDatetime: time,
+      };
+      try {
+        let res = await AjaxJasonData(`/xbardata/add`, "post", data);
+        SwalAlert(res, "upload");
+      } catch (error) {
+        SwalAlert(error, "error");
+      }
     }
   }
-});
+);
 
 $("#btn_toggle_cp").unbind();
 $("#btn_toggle_cp").click(() => {

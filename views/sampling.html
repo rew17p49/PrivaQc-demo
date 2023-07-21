@@ -22,6 +22,9 @@
           <a class="nav-link" aria-current="page" href="/">Ouality control</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/xbar">X-Bar Chart</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link active" href="/sampling">Sampling data</a>
         </li>
       </ul>
@@ -125,7 +128,7 @@
 
                     <div class="input-group">
                       <span class="input-group-text">Ref.</span>
-                      <input type="text" class="form-control" placeholder="reference" id="input_ref">
+                      <input type="text" class="form-control" placeholder="reference" id="input_ref_xbar">
                     </div>
                   </div>
                 </div>
@@ -166,7 +169,7 @@
                           <div class="w-50 me-3">
                             <label for="input_random_range_xbar" class="form-label form-label-sm">Range</label>
                             <input type="number" class="form-control form-control-sm" name="random_range"
-                              id="input_random_range_xbar" min="0" max="100" placeholder="1 - 25">
+                              id="input_random_range_xbar" min="1" max="25" placeholder="1 - 25">
                           </div>
                           <div class="w-50">
                             <label for="input_random_quantity_xbar" class="form-label form-label-sm">Quantity</label>

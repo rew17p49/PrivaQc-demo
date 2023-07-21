@@ -6,13 +6,13 @@ const config = {
   password: "p@ssw0rd",
   server: "119.59.96.61",
   database: "privaQC",
-  
+
   // test
   // user: "sa",
   // password: "P@ssw0rd",
   // server: "192.169.1.7",
   // database: "IMCT_DEMO",
-  
+
   options: {
     encrypt: false,
     trustServerCertificate: true,
@@ -134,11 +134,11 @@ async function getXBarDataByRef(ref) {
 
 async function addXBarData(data) {
   try {
-    let { Reference,valueArray,valueDatetime } = data;
+    let { Reference, valueData, valueDatetime } = data;
     valueDatetime = valueDatetime.replace(",", " ");
     const pool = await sql.connect(config);
     const query = `INSERT INTO XBarChart (Reference,valueArray,valueDatetime) 
-      VALUES ( N'${Reference}',N'${valueArray}', '${valueDatetime}')`; // เปลี่ยน column1, column2, column3 เป็นชื่อคอลัมน์ที่เหมาะสมในตาราง 'XBarChart'
+      VALUES ( N'${Reference}',N'${valueData}', '${valueDatetime}')`; // เปลี่ยน column1, column2, column3 เป็นชื่อคอลัมน์ที่เหมาะสมในตาราง 'XBarChart'
     const result = await pool.request().query(query);
     console.log("เพิ่มข้อมูลในตาราง XBarChart สำเร็จแล้ว");
   } catch (error) {
@@ -148,13 +148,15 @@ async function addXBarData(data) {
 
 async function addXBarRandomData(data) {
   try {
-    let { Reference,valueArray,valueDatetime } = data;
+    let { Reference, valueRandom, valueDatetime } = data;
     valueDatetime = valueDatetime.replace(",", " ");
     const pool = await sql.connect(config);
-
-    for (let i = 0; i < valueArray.length; i++) {
-      const query = `INSERT INTO XBarChart (Reference,valueData, valueDatetime) 
-      VALUES ( N'${Reference}',N'${valueArray[i]}', '${valueDatetime}')`; // เปลี่ยน column1, column2, column3 เป็นชื่อคอลัมน์ที่เหมาะสมในตาราง 'XBarChart'
+    valueRandom = JSON.parse(valueRandom);
+    for (let i = 0; i < valueRandom.length; i++) {
+      const query = `INSERT INTO XBarChart (Reference,valueArray, valueDatetime)
+      VALUES ( N'${Reference}',N'${JSON.stringify(
+        valueRandom[i]
+      )}', '${valueDatetime}')`; // เปลี่ยน column1, column2, column3 เป็นชื่อคอลัมน์ที่เหมาะสมในตาราง 'XBarChart'
       const result = await pool.request().query(query);
     }
 
