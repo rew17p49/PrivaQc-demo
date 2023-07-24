@@ -138,7 +138,6 @@ app.delete("/masterdata/delete/:id", async (req, res) => {
 });
 
 // Xbar
-
 app.get("/xbardata", async (req, res) => {
   try {
     const XBar = await getXBarData();
@@ -147,6 +146,7 @@ app.get("/xbardata", async (req, res) => {
     res.status(500).json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล xbar" });
   }
 });
+
 app.get("/xbardata/:ref", async (req, res) => {
   try {
     const ref = req.params.ref;

@@ -45,7 +45,7 @@ function fill_table_Xbar(data, id) {
         <div class="input-group input-group-sm mb-3 d-none">
           <input type="text" class="form-control" name="id" value="${sqlId}">
         </div>
-    `;
+      `;
       for (let i = 0; i < length; i++) {
         html += `
         <div class="input-group input-group-sm mb-3">
