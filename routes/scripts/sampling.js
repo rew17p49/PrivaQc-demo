@@ -282,3 +282,5 @@ $("#btn_toggle_send_Xbar").click(() => {
     $("#Send_Data_QC").toggleClass("show");
   }
 });
+
+

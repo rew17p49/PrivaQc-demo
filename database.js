@@ -146,6 +146,19 @@ async function addXBarData(data) {
   }
 }
 
+async function uppdateXBarData(data, id) {
+  try {
+    let { valueArray } = data;
+    // valueDatetime = valueDatetime.replace(",", " ");
+    const pool = await sql.connect(config);
+    const query = `UPDATE XBarChart SET valueArray = N'${valueArray}' WHERE id = ${id}`; // เปลี่ยน column1, column2, column3 เป็นชื่อคอลัมน์ที่เหมาะสมในตาราง 'XBarChart'
+    const result = await pool.request().query(query);
+    console.log("อัปเดตข้อมูลในตาราง XBarChart สำเร็จแล้ว");
+  } catch (error) {
+    console.log("เกิดข้อผิดพลาดในการเพิ่มข้อมูลในตาราง XBarChart:", error);
+  }
+}
+
 async function addXBarRandomData(data) {
   try {
     let { Reference, valueRandom, valueDatetime } = data;
@@ -177,4 +190,5 @@ module.exports = {
   getXBarDataByRef,
   addXBarData,
   addXBarRandomData,
+  uppdateXBarData,
 };

@@ -28,6 +28,7 @@ body {
 }
 
 .logo {
+  margin: 0;
   height: 45px;
 }
 
@@ -83,4 +84,39 @@ body {
 
 .solution {
   height: 70px;
+}
+
+/* สำหรับหน้าจอขนาดเล็ก แบบ Smartphone */
+@media only screen and (max-width: 480px) {
+  .logo {
+    height: 25px;
+  }
+  .navbar-priva .navbar-nav .nav-link{
+    font-size: 0.65rem;
+  }
+}
+
+/* สำหรับหน้าจอขนาดกลาง แบบ Tablet */
+@media only screen and (min-width: 481px) and (max-width: 1024px) {
+  .logo {
+    height: 30px;
+  }
+  .navbar-priva .navbar-nav .nav-link{
+    font-size: 0.9rem;
+  }
+}
+
+/* สำหรับหน้าจอขนาดกลาง แบบ Laptop */
+@media only screen and (min-width: 1025px) and (max-width: 1920px ) {
+  .logo {
+    height: 35px;
+  }
+  .navbar-priva .navbar-nav .nav-link{
+    font-size: 1.1rem;
+  }
+}
+
+/* สำหรับหน้าจอขนาดใหญ่ แบบ Desktop */
+@media only screen and (min-width: 1921px ) {
+  
 }

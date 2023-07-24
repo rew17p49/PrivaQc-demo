@@ -24,6 +24,7 @@ const {
   getXBarDataByRef,
   addXBarData,
   addXBarRandomData,
+  uppdateXBarData
 } = require("./database");
 
 app.use((req, res, next) => {
@@ -50,8 +51,6 @@ app.get("/xbar", (req, res) => {
 app.get("/test", (req, res) => {
   res.sendFile(__dirname + "/views/test.html");
 });
-
-
 
 let server = require("http").createServer(app);
 server.listen(port, () => {
@@ -88,7 +87,7 @@ app.get("/masterdata/:ref", async (req, res) => {
 app.post("/masterdata/add", async (req, res) => {
   try {
     const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'MasterData'
-    if (data.Reference  && data.valueData && data.valueDatetime) {
+    if (data.Reference && data.valueData && data.valueDatetime) {
       await addMasterData(data);
       sendData("ChartOrder", "chart-update", "reload table");
       res
@@ -105,7 +104,6 @@ app.post("/masterdata/add", async (req, res) => {
 });
 
 app.post("/masterdata/add/random", async (req, res) => {
-
   try {
     const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'MasterData'
     // console.log(data)
@@ -146,9 +144,7 @@ app.get("/xbardata", async (req, res) => {
     const XBar = await getXBarData();
     res.json(XBar);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล xbar" });
+    res.status(500).json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล xbar" });
   }
 });
 app.get("/xbardata/:ref", async (req, res) => {
@@ -157,17 +153,14 @@ app.get("/xbardata/:ref", async (req, res) => {
     const XBar = await getXBarDataByRef(ref);
     res.json(XBar);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล X-Bar" });
+    res.status(500).json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล X-Bar" });
   }
 });
 
 app.post("/xbardata/add", async (req, res) => {
   try {
     const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'xbardata'
-    console.log(data)
-    if (data.Reference  && data.valueData && data.valueDatetime) {
+    if (data.Reference && data.valueData && data.valueDatetime) {
       await addXBarData(data);
       sendData("XBarOrder", "x-bar-update", "reload table");
       res
@@ -184,10 +177,8 @@ app.post("/xbardata/add", async (req, res) => {
 });
 
 app.post("/xbardata/add/random", async (req, res) => {
-
   try {
     const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'MasterData'
-    console.log(data.valueRandom)
     if (data.Reference && data.valueRandom && data.valueDatetime) {
       await addXBarRandomData(data);
       sendData("XBarOrder", "x-bar-update", "reload table");
@@ -204,7 +195,23 @@ app.post("/xbardata/add/random", async (req, res) => {
   }
 });
 
-
+app.put("/xbardata/edit/:id", async (req, res, next) => {
+  try {
+    let { id } = req.params;
+    const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'MasterData'
+    if (data.valueArray) {
+      await uppdateXBarData(data, id);
+      sendData("XBarOrder", "x-bar-update", "reload table");
+      res
+        .status(200)
+        .json({ message: "อัปเดตข้อมูลในตาราง MasterData สำเร็จแล้ว" });
+    } else {
+      res.status(500).json({ message: "กรุณากรอกข้อมูลให้ครบ" });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
 const { socketConnection } = require("./libs/socket-io");
-socketConnection(server)
+socketConnection(server);

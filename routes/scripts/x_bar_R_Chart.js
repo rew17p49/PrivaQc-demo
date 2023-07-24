@@ -1,6 +1,6 @@
 function runChart(data) {
   let k = data[0].length;
-  // console.log(k)
+  // console.log('k: ',k)
   if (k == 1) {
     let D2 = 1.128;
     let D3 = 0;
@@ -10,14 +10,12 @@ function runChart(data) {
     let array_MR = [];
     for (let i = 0; i < data.length - 1; i++) {
       // console.log("data", data[i][0]);
-
       array_X.push(data[i][0]);
       let Def = Math.abs(data[i + 1][0] - data[i][0]);
       array_MR.push(Def);
       sumOfDef += Def;
     }
-    // console.log(array_X);
-    let MR_Bar = (1 / (N - 1)) * sumOfDef;
+    let MR_Bar = (1 / (array_MR.length - 1)) * sumOfDef;
     let X_Bar = calMean(data);
 
     //graph X Bar
@@ -63,7 +61,7 @@ function runChart(data) {
       // console.log("data sum:", calSum(data[i]));
       let group_Max = Math.max(...data[i]);
       let group_Min = Math.min(...data[i]);
-      let X_Bar = calSum(data[i]) / data[i].length;
+      let X_Bar = calMean(data[i]);
       let R = Math.abs(group_Max - group_Min);
       array_R.push(R);
       array_X_Bar.push(X_Bar);
@@ -157,15 +155,14 @@ function runChart(data) {
 ////////////////////////////////////////////////////
 
 function genXbarChart(chartName, Data) {
+  // console.log(chartName)
   let { data, LCL, UCL, CL } = Data;
   let cases = [];
   let Data_Viol = { x: [], y: [] };
   for (let i = 1; i <= data.length; i++) cases.push(i);
   let minCase = Math.min(...cases) - 1;
   let maxCase = Math.max(...cases) + 1;
-  if (chartName == "R") {
-    console.log(UCL);
-  }
+  
 
   for (let i = 0; i < data.length; i++) {
     if (data[i] > UCL || data[i] < LCL) {

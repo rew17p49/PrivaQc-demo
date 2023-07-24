@@ -1,41 +1,96 @@
-// let min = 20;
-// let max = 30;
-// let k = 5; // ความกว้างของชุดข้อมูล
-// let N = 20; // จำนวนชุดข้อมูล
-// let data = [];
-// let Def = Math.abs(max - min + 1);
-
-// for (var i = 0; i < N; i++) {
-//   let dataGroup = [];
-//   for (let j = 0; j < k; j++) {
-//     var randomNumber = Math.floor(Math.random() * Def) + parseInt(min); // สุ่มตัวเลขระหว่าง 20 - 40
-//     dataGroup.push(randomNumber);
-//   }
-//   data.push(dataGroup);
-// }
-
-function fill_table_Xbar(data) {
+function fill_table_Xbar(data, id) {
   let col = data[0].length + 1;
   let row = data.length;
   // console.log("row j: ", row);
-  // console.log("col i: ", col);
   let html = "";
   $("#tbXBar").html(html);
-  for (let i = 0; i < col; i++) {
+  for (let i = 0; i <= col; i++) {
     if (i == 0)
       $("#tbXBar").append(
         `<tr id = "col_${i}" ><th class="fixed-column"> Group </th></tr>`
       );
-    else
+    else if (i == col) {
+      $("#tbXBar").append(
+        `<tr id = "col_${i}" ><th class="fixed-column"> Action </th></tr>`
+      );
+    } else
       $("#tbXBar").append(
         `<tr id = "col_${i}" ><th class="fixed-column"> n${i} </th></tr>`
       );
 
     for (let j = 0; j < row; j++) {
       if (i == 0) $(`#col_${i}`).append(`<td>${j + 1}</td>`);
-      else $(`#col_${i}`).append(`<td>${data[j][i - 1]}</td>`);
+      else if (i == col) {
+        $(`#col_${i}`).append(
+          `<td ><button class="btn btn-sm btn-primary edit_xbar" sql ="${id[j]}"><i class="fa-solid fa-pen-to-square"></i></button></td>`
+        );
+      } else
+        $(`#col_${i}`).append(
+          `<td class ="sql_${id[j]}">${data[j][i - 1] || 0}</td>`
+        );
     }
   }
+
+  $("#tbXBar").on("click", ".edit_xbar", (e) => {
+    // console.log("target: ", $(e.target).hasClass("fa-solid"));
+
+    if ($(e.target).hasClass("fa-solid")) {
+      $(e.target).closest("button").click();
+    } else {
+      let sqlId = $(e.target)[0].attributes.sql.value;
+      let data = $(`.sql_${sqlId}`);
+
+      let length = data.length;
+      let html = `
+        <div class="input-group input-group-sm mb-3 d-none">
+          <input type="text" class="form-control" name="id" value="${sqlId}">
+        </div>
+    `;
+      for (let i = 0; i < length; i++) {
+        html += `
+        <div class="input-group input-group-sm mb-3">
+          <span class="input-group-text">n${i + 1}</span>
+          <input type="text" class="form-control" name="n${i + 1}" value="${
+          data[i].innerText
+        }">
+        </div>
+      `;
+      }
+      $("#edit_xbar_form .modal-body").html(html);
+      $("#modal_edit_xbar").modal("show");
+    }
+  });
+
+  $("#edit_xbar_form").submit(async function (e) {
+    e.preventDefault(); // ป้องกันการโหลดหน้าเว็บใหม่หลังจากการส่งฟอร์ม
+
+    let formData = $(this).serializeArray(); // ดึงข้อมูลฟอร์มเป็นอาร์เรย์
+
+    let jsonData = {};
+    let array = [];
+    let time = dataTimeNow();
+    let id;
+    $.each(formData, function (index, field) {
+      if (field.name == "id") {
+        id = field.value;
+      } else {
+        array.push(parseFloat(field.value));
+      }
+
+      // jsonData['Reference'] = $("#input_ref_xbar").val()
+      jsonData["valueArray"] = JSON.stringify(array);
+      // jsonData['valueDatetime'] = time
+    });
+    // console.log(jsonData);
+
+    try {
+      let res = await AjaxJasonData(`/xbardata/edit/${id}`, "put", jsonData);
+      SwalAlert(res, "update");
+      $("#modal_edit_xbar").modal("hide");
+    } catch (error) {
+      SwalAlert(error, "error");
+    }
+  });
 }
 
 function no_table() {
@@ -50,17 +105,9 @@ function no_table() {
 }
 
 async function getDataXbar(ref) {
-  // console.log(ref);
-  let arrayData = [];
   try {
     let res = await AjaxJasonData(`/xbardata/${ref}`, "get");
-    // console.log(res)
-    res.forEach((element) => {
-      let jsonString = element.valueArray;
-      let jsonArray = JSON.parse(jsonString);
-      arrayData.push(jsonArray);
-    });
-    return arrayData;
+    return res;
   } catch (error) {
     console.log(error);
     throw error;
@@ -71,9 +118,21 @@ function start(ref) {
   getDataXbar(ref)
     .then((res) => {
       if (!res.length == 0) {
-        fill_table_Xbar(res);
+        let arrayData = [];
+        let idData = [];
+        res.forEach((element) => {
+          let valueArray_Str = element.valueArray;
+          let valueArray_json = JSON.parse(valueArray_Str);
+          arrayData.push(valueArray_json);
+
+          let id_Str = element.id;
+          let id_json = JSON.parse(id_Str);
+          idData.push(id_json);
+        });
+
+        fill_table_Xbar(arrayData, idData);
         $(".show_chart").removeClass("d-none");
-        runChart(res);
+        runChart(arrayData);
       } else {
         no_table();
         $(".show_chart").addClass("d-none");
@@ -113,7 +172,6 @@ const socketio = () => {
   socket.on("x-bar-update", (msg) => {
     console.log(msg);
     let ref = $("#input_ref_xbar").val();
-    // console.log(ref)
     start(ref);
   });
   socket.on("disconnect", () => {
@@ -129,5 +187,4 @@ $("#ref_xbar_search").unbind();
 $("#ref_xbar_search").click((e) => {
   let ref = $("#input_ref_xbar").val();
   start(ref);
-  
 });
