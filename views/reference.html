@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  <title>IMCT_DEMO</title>
+  <title>formula</title>
   <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/datatables.min.css">
@@ -37,12 +37,14 @@
   <!-- Body -->
   <div class="container py-4">
     <div class="row">
-      <div class="col-12 col-lg-8 mx-auto ">
+      <div class="col-12 my-5 mt-3">
+        <h1 class=" text-center">Formula</h1>
+      </div>
+      <div class="col-12 col-lg-8 mx-auto mb-3 ">
         <div class="card shadow p-2">
           <div class="card-body">
-            <h3 class="mb-3">Formula</h3>
+            <h3 class="mb-3">Quality control</h3>
             <ul>
-
               <li class="mb-3">
                 <p class="fw-bold">การหาค่าเฉลี่ยของชุดข้อมูล (x̄)</p>
                 <div class="text-center mb-2">
@@ -50,7 +52,7 @@
                 </div>
                 <p>Σ คือ ผลรวมของสมาชิกในชุดข้อมูล</p>
                 <p>x คือ ค่าข้อมูลแต่ละตัวในชุดข้อมูล</p>
-                <p>n คือ จำนวนข้อมูลในชุด</p>
+                <p>n คือ จำนวนของชุดข้อมูล</p>
               </li>
 
               <li class="mb-3">
@@ -62,7 +64,7 @@
                 <p>x คือ ค่าข้อมูลแต่ละตัวในชุดข้อมูล</p>
                 <p>w คือ ค่าความกว้างของชุดข้อมูล</p>
                 <p>i คือ ลำดับของข้อมูล</p>
-                <p>n คือ จำนวนข้อมูลในชุด</p>
+                <p>n คือ จำนวนของชุดข้อมูล</p>
               </li>
 
               <li class="mb-3">
@@ -73,7 +75,7 @@
                 <p>Σ คือ ผลรวมของสมาชิกในชุดข้อมูล</p>
                 <p>x คือ ค่าข้อมูลแต่ละตัวในชุดข้อมูล</p>
                 <p>x̄ คือ ค่าเฉลี่ยของชุดข้อมูล</p>
-                <p>n คือ จำนวนข้อมูลในชุด</p>
+                <p>n คือ จำนวนของชุดข้อมูล</p>
               </li>
 
               <li class="mb-3">
@@ -137,7 +139,201 @@
                 </div>
               </li>
             </ul>
+          </div>
+        </div>
+      </div>
 
+      <div class="col-12 col-lg-8 mx-auto mb-3">
+        <div class="card shadow p-2">
+          <div class="card-body">
+            <h3 class="mb-3">X-Bar Chart</h3>
+
+            <ul>
+              <li class="mb-3">
+                <p class="fw-bold">กรณีความกว้างของชุดข้อมูลเท่ากับ 1</p>
+                <ul>
+                  <li class="mb-3">
+                    <p class="fw-bold">การหาค่า UCL</p>
+                    <div class="text-center mb-2">
+                      <img class="solution" src="/img/solution-ucl-x-1.png" alt="">
+                    </div>
+                    <p>x̄ คือ ค่าเฉลี่ยของชุดข้อมูล</p>
+                    <p>MR-bar คือ ค่าเฉลี่ยของตัวประมาณค่าพิสัย (R)</p>
+                  </li>
+                  <li class="mb-3">
+                    <p class="fw-bold">การหาค่า CL</p>
+                    <div class="text-center mb-2">
+                      <img class="solution" src="/img/solution-cl-x-1.png" alt="">
+                    </div>
+                    <p>x̄ คือ ค่าเฉลี่ยของชุดข้อมูล</p>
+                  </li>
+                  <li class="mb-3">
+                    <p class="fw-bold">การหาค่า LCL</p>
+                    <div class="text-center mb-2">
+                      <img class="solution" src="/img/solution-lcl-x-1.png" alt="">
+                    </div>
+                    <p>x̄ คือ ค่าเฉลี่ยของชุดข้อมูล</p>
+                    <p>MR-bar คือ ค่าเฉลี่ยของตัวประมาณค่าพิสัย (R)</p>
+                  </li>
+                </ul>
+
+              </li>
+              <li class="mb-3">
+                <p class="fw-bold">กรณีความกว้างของชุดข้อมูลเท่ากับ 2 ถึง 10</p>
+                <ul>
+                  <li class="mb-3">
+                    <p class="fw-bold">การหาค่า UCL</p>
+                    <div class="text-center mb-2">
+                      <img class="solution" src="/img/solution-ucl-x-2.png" alt="">
+                    </div>
+                    <p>x&#772;&#772 คือ ค่าเฉลี่ยของ x&#772</p>
+                    <p>A2 คือ ค่าคงที่จากตาราง</p>
+                    <p>R&#772 คือ ค่าเฉลี่ยของค่าพิสัย</p>
+                  </li>
+                  <li class="mb-3">
+                    <p class="fw-bold">การหาค่า CL</p>
+                    <div class="text-center mb-2">
+                      <img class="solution" src="/img/solution-cl-x-2.png" alt="">
+                    </div>
+                    <p>x&#772;&#772 คือ ค่าเฉลี่ยของ x&#772</p>
+                  </li>
+                  <li class="mb-3">
+                    <p class="fw-bold">การหาค่า LCL</p>
+                    <div class="text-center mb-2">
+                      <img class="solution" src="/img/solution-lcl-x-2.png" alt="">
+                    </div>
+                    <p>x&#772;&#772 คือ ค่าเฉลี่ยของ x&#772</p>
+                    <p>A2 คือ ค่าคงที่จากตาราง</p>
+                    <p>R&#772 คือ ค่าเฉลี่ยของค่าพิสัย</p>
+                  </li>
+                </ul>
+
+              </li>
+              <li class="mb-3">
+                <p class="fw-bold">กรณีความกว้างของชุดข้อมูลเท่ากับ 10 ถึง 25</p>
+                <ul>
+                  <li class="mb-3">
+                    <p class="fw-bold">การหาค่า UCL</p>
+                    <div class="text-center mb-2">
+                      <img class="solution" src="/img/solution-ucl-x-3.png" alt="">
+                    </div>
+                    <p>x&#772;&#772 คือ ค่าเฉลี่ยของ x&#772</p>
+                    <p>A3 คือ ค่าคงที่จากตาราง</p>
+                    <p>s&#772 คือ ค่าเฉลี่ยของค่าความเบี่ยงเบนมาตรฐาน</p>
+                  </li>
+                  <li class="mb-3">
+                    <p class="fw-bold">การหาค่า CL</p>
+                    <div class="text-center mb-2">
+                      <img class="solution" src="/img/solution-cl-x-3.png" alt="">
+                    </div>
+                    <p>x&#772;&#772 คือ ค่าเฉลี่ยของ x&#772</p>
+                  </li>
+                  <li class="mb-3">
+                    <p class="fw-bold">การหาค่า LCL</p>
+                    <div class="text-center mb-2">
+                      <img class="solution" src="/img/solution-lcl-x-3.png" alt="">
+                    </div>
+                    <p>x&#772;&#772 คือ ค่าเฉลี่ยของ x&#772</p>
+                    <p>A3 คือ ค่าคงที่จากตาราง</p>
+                    <p>s&#772 คือ ค่าเฉลี่ยของค่าความเบี่ยงเบนมาตรฐาน</p>
+                  </li>
+                </ul>
+
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-8 mx-auto mb-3">
+        <div class="card shadow p-2">
+          <div class="card-body">
+            <h3 class="mb-3">MR Chart</h3>
+
+            <ul>
+              <li class="mb-3">
+                <p class="fw-bold">การหาค่า MR-Bar </p>
+                <div class="text-center mb-2">
+                  <img class="solution" src="/img/solution-mr-bar.png" alt="">
+                </div>
+                <p>x คือ ค่าของชุดข้อมูล</p>
+                <p>n คือ จำนวนของชุดข้อมูล</p>
+                <p>i คือ ลำดับของชุดข้อมูล</p>
+              </li>
+              <li class="mb-3">
+                <p class="fw-bold">การหาค่า UCL</p>
+                <div class="text-center mb-2">
+                  <img class="solution" src="/img/solution-mr-ucl.png" alt="">
+                </div>
+                <p>D4 คือ ค่าคงที่จากตาราง</p>
+                <p>MR-bar คือ ค่าเฉลี่ยของตัวประมาณค่าพิสัย (R)</p>
+              </li>
+              <li class="mb-3">
+                <p class="fw-bold">การหาค่า CL</p>
+                <div class="text-center mb-2">
+                  <img class="solution" src="/img/solution-mr-cl.png" alt="">
+                </div>
+                <p>MR-bar คือ ค่าเฉลี่ยของตัวประมาณค่าพิสัย (R)</p>
+              </li>
+              <li class="mb-3">
+                <p class="fw-bold">การหาค่า LCL</p>
+                <div class="text-center mb-2">
+                  <img class="solution" src="/img/solution-mr-lcl.png" alt="">
+                </div>
+                <p>D3 คือ ค่าคงที่จากตาราง</p>
+                <p>MR-bar คือ ค่าเฉลี่ยของตัวประมาณค่าพิสัย (R)</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-8 mx-auto mb-3">
+        <div class="card shadow p-2">
+          <div class="card-body">
+            <h3 class="mb-3">R Chart</h3>
+
+            <ul>
+              <li class="mb-3">
+                <p class="fw-bold">การหาค่าพิสัยของชุดข้อมูล (R) </p>
+                <div class="text-center mb-2">
+                  <img class="solution" src="/img/solution-r.png" alt="">
+                </div>
+                <p>x max คือ ค่าที่มากที่สุดของชุดข้อมูล</p>
+                <p>x min คือ ค่าที่น้อยที่สุดของชุดข้อมูล</p>
+              </li>
+              <li class="mb-3">
+                <p class="fw-bold">การหาค่า R-Bar </p>
+                <div class="text-center mb-2">
+                  <img class="solution" src="/img/solution-r-bar.png" alt="">
+                </div>
+                <p>R คือ ค่าพิสัยของชุดข้อมูล</p>
+                <p>n คือ จำนวนของชุดข้อมูล</p>
+              </li>
+              <li class="mb-3">
+                <p class="fw-bold">การหาค่า UCL</p>
+                <div class="text-center mb-2">
+                  <img class="solution" src="/img/solution-r-ucl.png" alt="">
+                </div>
+                <p>D4 คือ ค่าคงที่จากตาราง</p>
+                <p>R&#772 คือ ค่าเฉลี่ยของพิสัย (R)</p>
+              </li>
+              <li class="mb-3">
+                <p class="fw-bold">การหาค่า CL</p>
+                <div class="text-center mb-2">
+                  <img class="solution" src="/img/solution-r-cl.png" alt="">
+                </div>
+                <p>R&#772 คือ ค่าเฉลี่ยของพิสัย (R)</p>
+              </li>
+              <li class="mb-3">
+                <p class="fw-bold">การหาค่า LCL</p>
+                <div class="text-center mb-2">
+                  <img class="solution" src="/img/solution-r-lcl.png" alt="">
+                </div>
+                <p>D3 คือ ค่าคงที่จากตาราง</p>
+                <p>R&#772 คือ ค่าเฉลี่ยของพิสัย (R)</p>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
