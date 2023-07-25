@@ -22,12 +22,23 @@ function runChart(data) {
     let X_UCL = X_Bar + (3 * MR_Bar) / D2;
     let X_CL = X_Bar;
     let X_LCL = X_Bar - (3 * MR_Bar) / D2;
-    // console.log(calSum(data))
 
     //graph MR Bar
     let MR_UCL = D4 * MR_Bar;
     let MR_CL = MR_Bar;
     let MR_LCL = D3 * MR_Bar;
+
+    // Show
+    $("#show_xbar").val(X_Bar.toFixed(2));
+    $("#show_xbar_UCL").val(X_UCL.toFixed(2));
+    $("#show_xbar_CL").val(X_CL.toFixed(2));
+    $("#show_xbar_LCL").val(X_LCL.toFixed(2));
+
+    $("#show_sub_span").html("MR-Bar");
+    $("#show_sub").val(MR_Bar.toFixed(2));
+    $("#show_sub_UCL").val(MR_UCL.toFixed(2));
+    $("#show_sub_CL").val(MR_CL.toFixed(2));
+    $("#show_sub_LCL").val(MR_LCL.toFixed(2));
 
     let chart_X_Data = {
       data: array_X,
@@ -43,7 +54,7 @@ function runChart(data) {
       CL: MR_CL,
     };
 
-    genXbarChart("X-Bar", chart_X_Data);
+    genXbarChart("X", chart_X_Data);
     genXbarChart("MR", chart_MR_Data);
   }
   // solution กรณี 2 <= k <= 10
@@ -79,6 +90,18 @@ function runChart(data) {
     let R_Bar_UCL = D4[No] * R_Bar;
     let R_Bar_CL = R_Bar;
     let R_Bar_LCL = D3[No] * R_Bar;
+
+    // Show
+    $("#show_xbar").val(X_DubleBar.toFixed(2));
+    $("#show_xbar_UCL").val(X_Bar_UCL.toFixed(2));
+    $("#show_xbar_CL").val(X_Bar_CL.toFixed(2));
+    $("#show_xbar_LCL").val(X_Bar_LCL.toFixed(2));
+
+    $("#show_sub_span").html("R-Bar");
+    $("#show_sub").val(R_Bar.toFixed(2));
+    $("#show_sub_UCL").val(R_Bar_UCL.toFixed(2));
+    $("#show_sub_CL").val(R_Bar_CL.toFixed(2));
+    $("#show_sub_LCL").val(R_Bar_LCL.toFixed(2));
 
     let chart_X_Bar_Data = {
       data: array_X_Bar,
@@ -132,6 +155,18 @@ function runChart(data) {
     let S_Bar_CL = S_Bar;
     let S_Bar_LCL = B3[No] * S_Bar;
 
+    // Show
+    $("#show_xbar").val(X_DubleBar.toFixed(2));
+    $("#show_xbar_UCL").val(X_Bar_UCL.toFixed(2));
+    $("#show_xbar_CL").val(X_Bar_CL.toFixed(2));
+    $("#show_xbar_LCL").val(X_Bar_LCL.toFixed(2));
+
+    $("#show_sub_span").html("S-Bar");
+    $("#show_sub").val(S_Bar.toFixed(2));
+    $("#show_sub_UCL").val(S_Bar_UCL.toFixed(2));
+    $("#show_sub_CL").val(S_Bar_CL.toFixed(2));
+    $("#show_sub_LCL").val(S_Bar_LCL.toFixed(2));
+
     let chart_X_Bar_Data = {
       data: array_X_Bar,
       LCL: X_Bar_LCL,
@@ -162,7 +197,6 @@ function genXbarChart(chartName, Data) {
   for (let i = 1; i <= data.length; i++) cases.push(i);
   let minCase = Math.min(...cases) - 1;
   let maxCase = Math.max(...cases) + 1;
-  
 
   for (let i = 0; i < data.length; i++) {
     if (data[i] > UCL || data[i] < LCL) {
@@ -257,7 +291,7 @@ function genXbarChart(chartName, Data) {
     },
   };
 
-  if (chartName == "X-Bar") {
+  if (chartName == "X-Bar" || chartName == "X") {
     Plotly.newPlot("xBarChart", chart_Data, ChartLayout);
   } else {
     Plotly.newPlot("RChart", chart_Data, ChartLayout);

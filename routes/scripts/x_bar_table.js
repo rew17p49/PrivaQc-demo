@@ -11,7 +11,7 @@ function fill_table_Xbar(data, id) {
       );
     else if (i == col) {
       $("#tbXBar").append(
-        `<tr id = "col_${i}" ><th class="fixed-column"> Action </th></tr>`
+        `<tr id = "col_${i}" ><th class="fixed-column"> Edit </th></tr>`
       );
     } else
       $("#tbXBar").append(

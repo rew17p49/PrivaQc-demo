@@ -48,7 +48,7 @@ app.get("/xbar", (req, res) => {
   res.sendFile(__dirname + "/views/xbarChart.html");
 });
 
-app.get("/test", (req, res) => {
+app.get("/simulation", (req, res) => {
   res.sendFile(__dirname + "/views/test.html");
 });
 
