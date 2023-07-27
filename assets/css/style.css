@@ -89,7 +89,7 @@ body {
 /* สำหรับหน้าจอขนาดเล็ก แบบ Smartphone */
 @media only screen and (max-width: 480px) {
   .logo {
-    height: 25px;
+    height: 30px;
   }
   .navbar-priva .navbar-nav .nav-link{
     font-size: 0.65rem;
@@ -99,7 +99,7 @@ body {
 /* สำหรับหน้าจอขนาดกลาง แบบ Tablet */
 @media only screen and (min-width: 481px) and (max-width: 1024px) {
   .logo {
-    height: 30px;
+    height: 35px;
   }
   .navbar-priva .navbar-nav .nav-link{
     font-size: 0.9rem;
@@ -109,7 +109,7 @@ body {
 /* สำหรับหน้าจอขนาดกลาง แบบ Laptop */
 @media only screen and (min-width: 1025px) and (max-width: 1920px ) {
   .logo {
-    height: 35px;
+    height: 40px;
   }
   .navbar-priva .navbar-nav .nav-link{
     font-size: 1.1rem;

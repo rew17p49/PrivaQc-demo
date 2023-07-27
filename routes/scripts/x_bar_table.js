@@ -136,6 +136,7 @@ function start(ref) {
       } else {
         no_table();
         $(".show_chart").addClass("d-none");
+        SwalError("ไม่พบข้อมูลในฐานข้อมูล");
         // No data available in table
       }
     })

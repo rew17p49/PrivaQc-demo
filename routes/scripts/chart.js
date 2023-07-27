@@ -380,7 +380,6 @@ function genChart(value, M = null, SD_PPK = null, lcl = null, ucl = null) {
 }
 
 async function start(ref) {
-
   value.splice(0);
   fill_table(ref);
   try {
@@ -388,48 +387,54 @@ async function start(ref) {
     res.forEach((element) => {
       value.push(element.valueData);
     });
+
+    if (res.length == 0) {
+      // genChart(value);
+      SwalError("ไม่พบข้อมูลในฐานข้อมูล");
+    }
   } catch (error) {
     console.log(error);
   }
   genChart(value);
+
 }
 
 // $(function () {
-  start(demo);
-  socketio();
+start(demo);
+socketio();
 
-  $("#btn_change").unbind();
-  $("#btn_change").click((e) => {
-    let this_btn = $(e.target);
-    if (this_btn.hasClass("toLines")) {
-      this_btn.removeClass("toLines");
-      Plotly.restyle("controlChart", { mode: "lines" }, [0]);
-    } else {
-      this_btn.addClass("toLines");
-      Plotly.restyle("controlChart", { mode: "markers" }, [0]);
-    }
-  });
+$("#btn_change").unbind();
+$("#btn_change").click((e) => {
+  let this_btn = $(e.target);
+  if (this_btn.hasClass("toLines")) {
+    this_btn.removeClass("toLines");
+    Plotly.restyle("controlChart", { mode: "lines" }, [0]);
+  } else {
+    this_btn.addClass("toLines");
+    Plotly.restyle("controlChart", { mode: "markers" }, [0]);
+  }
+});
 
-  $("#ref_search").unbind();
-  $("#ref_search").click((e) => {
-    let ref = $("#input_ref").val();
+$("#ref_search").unbind();
+$("#ref_search").click((e) => {
+  let ref = $("#input_ref").val();
 
-    if (ref) {
-      start(ref);
-    } else {
-      fill_table(null);
-      value = []
-      genChart(value);
-    }
-  });
+  if (ref) {
+    start(ref);
+  } else {
+    fill_table(null);
+    value = [];
+    genChart(value);
+  }
+});
 
-  $("#change_data").unbind();
-  $("#change_data").click(async (e) => {
-    let Mean = $("#show_Mean").val();
-    let SD_PPK = $("#show_SD_PPK").val();
-    let LCL = $("#show_LCL").val();
-    let UCL = $("#show_UCL").val();
-    // console.log(value)
-    genChart(value, Mean, SD_PPK, LCL, UCL);
-  });
+$("#change_data").unbind();
+$("#change_data").click(async (e) => {
+  let Mean = $("#show_Mean").val();
+  let SD_PPK = $("#show_SD_PPK").val();
+  let LCL = $("#show_LCL").val();
+  let UCL = $("#show_UCL").val();
+  // console.log(value)
+  genChart(value, Mean, SD_PPK, LCL, UCL);
+});
 // });

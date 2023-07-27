@@ -1,6 +1,9 @@
 function calSum(array) {
-  let sum = array.reduce((total, num) => parseFloat(total) + parseFloat(num), 0);
-  
+  let sum = array.reduce(
+    (total, num) => parseFloat(total) + parseFloat(num),
+    0
+  );
+
   return sum;
 }
 
@@ -88,30 +91,38 @@ function AjaxJasonData(url, method, data = null) {
 
 function SwalAlert(txt, title) {
   let action = title.toUpperCase();
-  let Text;
   if (action == "ERROR") {
-    // console.log(txt);
-    if (txt.responseJSON.message) Text = txt.responseJSON.message;
     Swal.fire({
       position: "center",
       icon: "warning",
       title: title,
-      text: Text,
+      text: txt.responseJSON.message,
       showConfirmButton: true,
       confirmButtonText: "OK",
       confirmButtonColor: "#FF5733",
     });
   } else {
-    if (txt.message) Text = txt.message;
     Swal.fire({
       position: "center",
       icon: "success",
       title: title,
-      text: Text,
+      text: txt.message,
       showConfirmButton: false,
       timer: 1500,
     });
   }
+}
+
+function SwalError(txt) {
+  Swal.fire({
+    position: "center",
+    icon: "warning",
+    title: "Error",
+    text: txt,
+    showConfirmButton: true,
+    confirmButtonText: "OK",
+    confirmButtonColor: "#FF5733",
+  });
 }
 
 // // ตัวอย่างการใช้งาน
