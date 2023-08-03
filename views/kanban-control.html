@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanban Board</title>
+  <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/kanban.css">
+  <link rel="stylesheet" href="/css/kanban-control.css">
+</head>
+
+<body>
+  <div class="row row-head">
+    <div class="col-1 col-border">
+      <p>NO</p>
+    </div>
+    <div class="col-4 col-border">
+      <p>CONTENT</p>
+    </div>
+    <div class="col-3 col-border">
+      <p>COLOR</p>
+
+
+    </div>
+    <div class="col-2 col-border">
+      <div class="d-flex justify-content-center align-items-center">
+        <p class="me-3">PHASE</p>
+        <button type="button" class="btn btn-sm btn-warning">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+      </div>
+    </div>
+    <div class="col-2 col-border">
+      <p>ACTION</p>
+    </div>
+  </div>
+
+  <div class="row row-body">
+
+    <div class="col-1 col-border column-no">
+      <div class="items item-1">
+        <p>1</p>
+      </div>
+    </div>
+
+    <div class="col-4 col-border column-content">
+      <div class="items item-1">
+        <input type="text" class="ip-content" value="test content">
+      </div>
+    </div>
+
+    <div class="col-3 col-border column-color">
+      <div class="items item-1">
+        <div class="d-flex justify-content-center align-items-center">
+          <input type="color" class="me-1 ip-color" id="show_color_1" value="#F4B314">
+          <select class="form-select">
+            <option value="#F4B314">#F4B314</option>
+            <option value="#F6793A">#F6793A</option>
+            <option value="#728BF4">#728BF4</option>
+            <option value="#04D5C5">#04D5C5</option>
+            <option value="#92E230">#92E230</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-2 col-border column-phase">
+      <div class="items item-1">
+        <select class="form-select" id="show_phase_1">
+          <option value="PLAN">PLAN</option>
+          <option value="WORK">WORK</option>
+          <option value="CHECK">CHECK</option>
+          <option value="DONE">DONE</option>
+        </select>
+      </div>
+
+
+    </div>
+
+    <div class="col-2 col-border column-action">
+      <div class="items item-1">
+        <div class="btn-group w-75" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-sm btn-primary me-1 btn-edit" id="btn_edit_1">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button type="button" class="btn btn-sm btn-danger btn-del" id="btn_del_1">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+      </div>
+      <div class="items item-1">
+        <div class="btn-group w-75" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-sm btn-primary me-1 btn-edit" id="btn_edit_2">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button type="button" class="btn btn-sm btn-danger btn-del" id="btn_del_2">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row row-footer">
+    <div class="col">
+      <div>
+        <img class="logo" src="/img/Priva Logo.png" alt="">
+      </div>
+      <div class="d-flex">
+        <a class="nav-link me-3 active" href="/kanban">dashboard</a>
+        <a class="nav-link me-3" href="/sampling">control</a>
+        <div class="input-group input-group-sm ref">
+          <input type="text" class="form-control" placeholder="Reference No." id="input_Ref" value="demo">
+          <div class="btn  btn-primary" id="btn_search"><i class="fa-solid fa-magnifying-glass"></i></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="/jquery/dist/jquery.min.js"></script>
+  <script src="/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/fontawesome.js"></script>
+  <script src="/js/math.js"></script>
+  <script src="/js/swalalert2.js"></script>
+  <script src="js/socket.io.min.js"></script>
+  <script src="js/sockethost.js"></script>
+
+  <script src="/scripts/kanban-control.js"></script>
+
+</body>
+
+</html>

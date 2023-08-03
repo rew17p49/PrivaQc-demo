@@ -1,0 +1,29 @@
+.row-body {
+  overflow: auto;
+}
+
+.row-body .col-border .items {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.items .ip-content {
+  width: 100%;
+  font-size: 1.2rem;
+}
+
+.items .ip-color {
+  border: 4px solid greenyellow;
+}
+
+.items .ip-color:disabled {
+  border: none;
+}
+
+.row-body::-webkit-scrollbar {
+  width: 0;
+}
+

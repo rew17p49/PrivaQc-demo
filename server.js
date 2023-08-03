@@ -24,8 +24,14 @@ const {
   getXBarDataByRef,
   addXBarData,
   addXBarRandomData,
-  uppdateXBarData
+  uppdateXBarData,
 } = require("./database");
+
+const {
+  countKanbanPhase,
+  getKanbanDataByRef,
+  addKanbanData,
+} = require("./db_kanban");
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -52,10 +58,19 @@ app.get("/simulation", (req, res) => {
   res.sendFile(__dirname + "/views/test.html");
 });
 
+app.get("/kanban", (req, res) => {
+  res.sendFile(__dirname + "/views/kanban-board.html");
+});
+
+app.get("/kanban-control", (req, res) => {
+  res.sendFile(__dirname + "/views/kanban-control.html");
+});
+
 let server = require("http").createServer(app);
 server.listen(port, () => {
   console.log(`Listening on ${port}`);
 });
+
 // app.listen(port, () => {
 //   console.log(`Server is running on ${port}`);
 // });
@@ -210,6 +225,54 @@ app.put("/xbardata/edit/:id", async (req, res, next) => {
     }
   } catch (error) {
     next(error);
+  }
+});
+
+// Kanban
+
+app.get("/kanban/test", async (req, res) => {
+  try {
+    const XBar = await countKanbanPhase("demo", "PLAN");
+    res.json(XBar);
+    console.log(XBar[0].TotalPhase);
+  } catch (error) {
+    res.status(500).json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล xbar" });
+  }
+});
+
+app.get("/kanban/get/:ref", async (req, res) => {
+  try {
+    const {ref} = req.params;
+    const kanban = await getKanbanDataByRef(ref);
+    res.json(kanban);
+  } catch (error) {
+    res.status(500).json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล KanBan" });
+  }
+});
+
+app.post("/kanban/add", async (req, res) => {
+  try {
+    const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'xbardata'
+    let { Reference, phaseArray, content, phase, color, valueDatetime } = data;
+    if (Reference && phase) {
+      let check = await countKanbanPhase(Reference, phase);
+      let phaseLength = check[0].TotalPhase;
+      if (phaseLength < 5) {
+        await addKanbanData(data);
+        sendData("KanbanOrder", "Kanban-update", "reload");
+        res
+          .status(200)
+          .json({ message: "เพิ่มข้อมูลในตาราง KanBan สำเร็จแล้ว" });
+      } else {
+        res.status(500).json({ message: "กรุณากรอกข้อมูลให้ครบ" });
+      }
+    } else {
+      res.status(500).json({ message: "กรุณากรอกข้อมูลให้ครบ" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "เกิดข้อผิดพลาดในการเพิ่มข้อมูลในตาราง KanBan" });
   }
 });
 

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanban Board</title>
+  <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/kanban.css">
+</head>
+
+<body>
+  <div class="row row-head">
+    <div class="col-3 col-border phase-01">
+    </div>
+    <div class="col-3 col-border phase-02">
+    </div>
+    <div class="col-3 col-border phase-03">
+    </div>
+    <div class="col-3 col-border phase-04">
+    </div>
+  </div>
+
+  <div class="row row-body">
+    <div class="col-3 col-border phase-01"></div>
+    <div class="col-3 col-border phase-02"></div>
+    <div class="col-3 col-border phase-03"></div>
+    <div class="col-3 col-border phase-04"></div>
+  </div>
+
+  <div class="row row-footer">
+    <div class="col">
+      <div>
+        <img class="logo" src="/img/Priva Logo.png" alt="">
+      </div>
+      <div class="d-flex">
+        <a class="nav-link me-3 active" href="/kanban">dashboard</a>
+        <a class="nav-link me-3" href="/sampling">control</a>
+        <div class="input-group input-group-sm ref">
+          <input type="text" class="form-control" placeholder="Reference No." id="input_Ref" value="demo">
+          <div class="btn  btn-primary" id="btn_search"><i class="fa-solid fa-magnifying-glass"></i></div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <script src="/jquery/dist/jquery.min.js"></script>
+  <script src="/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/fontawesome.js"></script>
+  <script src="/js/math.js"></script>
+  <script src="/js/swalalert2.js"></script>
+  <script src="js/socket.io.min.js"></script>
+  <script src="js/sockethost.js"></script>
+
+  <script src="/scripts/kanban.js"></script>
+
+</body>
+
+</html>
