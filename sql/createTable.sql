@@ -16,10 +16,11 @@ CREATE TABLE [XBarChart] (
 
 CREATE TABLE [KanBan] (
     id bigint IDENTITY(1,1) PRIMARY KEY NOT NULL,
-    Reference VARCHAR(225),
+    reference VARCHAR(225),
     phaseArray VARCHAR(225),
-    content VARCHAR(225),
-	phase VARCHAR(225),
+    content VARCHAR(225) UNIQUE,
+	phase INT,
 	color VARCHAR(225),
-    valueDatetime DATETIME,
+    position INT,
+    showStatus INT,
 );

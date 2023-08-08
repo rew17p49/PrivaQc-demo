@@ -72,7 +72,7 @@ function dataTimeNow() {
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
 }
 
-function AjaxJasonData(url, method, data = null) {
+function AjaxJasonData(url, method, data) {
   return new Promise(async (resolve, reject) => {
     $.ajax({
       url: url,
@@ -89,8 +89,25 @@ function AjaxJasonData(url, method, data = null) {
   });
 }
 
+function AjaxJasonNoData(url, method) {
+  return new Promise(async (resolve, reject) => {
+    $.ajax({
+      url: url,
+      method: method,
+      contentType: "application/json",
+      success: (res) => {
+        resolve(res);
+      },
+      error: (err) => {
+        reject(err);
+      },
+    });
+  });
+}
+
 function SwalAlert(txt, title) {
   let action = title.toUpperCase();
+  console.log(txt)
   if (action == "ERROR") {
     Swal.fire({
       position: "center",

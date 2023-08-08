@@ -6,127 +6,139 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kanban Board</title>
   <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/kanban.css">
+  <!-- <link rel="stylesheet" href="/css/kanban.css"> -->
   <link rel="stylesheet" href="/css/kanban-control.css">
 </head>
 
 <body>
-  <div class="row row-head">
-    <div class="col-1 col-border">
-      <p>NO</p>
-    </div>
-    <div class="col-4 col-border">
-      <p>CONTENT</p>
-    </div>
-    <div class="col-3 col-border">
-      <p>COLOR</p>
+  <!-- Modal -->
+  <div class="modal fade" tabindex="-1" id="modal_add_content">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header bg-dark">
+          <h5 class="modal-title">New Content</h5>
+          <button type="button" class="btn-close text-light bg-danger" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <form id="add_content_form">
 
+          <div class="modal-body">
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" name="content" placeholder="your content...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success">Submit</button>
+          </div>
+        </form>
 
-    </div>
-    <div class="col-2 col-border">
-      <div class="d-flex justify-content-center align-items-center">
-        <p class="me-3">PHASE</p>
-        <button type="button" class="btn btn-sm btn-warning">
-          <i class="fa-solid fa-pen-to-square"></i>
-        </button>
       </div>
-    </div>
-    <div class="col-2 col-border">
-      <p>ACTION</p>
     </div>
   </div>
+  <div class="modal fade" tabindex="-1" id="modal_phase_edit">
+    <div class="modal-dialog ">
+      <div class="modal-content">
+        <div class="modal-header bg-dark">
+          <h5 class="modal-title">Editing Phase</h5>
+          <button type="button" class="btn-close text-light bg-danger" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <form id="phase_edit_form">
 
-  <div class="row row-body">
+          <div class="modal-body">
+            <div class="d-flex justify-content-center align-items-center mb-3">
+              <div class="me-3">
+                <label class="form-label text-dark">Phase 1</label>
+                <input type="text" class="form-control" name="phase1">
+              </div>
+              <div>
+                <label class="form-label text-dark">Phase 2</label>
+                <input type="text" class="form-control" name="phase2">
+              </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center mb-3">
+              <div class="me-3">
+                <label class="form-label text-dark">Phase 3</label>
+                <input type="text" class="form-control" name="phase3">
+              </div>
+              <div>
+                <label class="form-label text-dark">Phase 4</label>
+                <input type="text" class="form-control" name="phase4">
+              </div>
+            </div>
 
-    <div class="col-1 col-border column-no">
-      <div class="items item-1">
-        <p>1</p>
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success">Submit</button>
+          </div>
+        </form>
+
       </div>
     </div>
-
-    <div class="col-4 col-border column-content">
-      <div class="items item-1">
-        <input type="text" class="ip-content" value="test content">
+  </div>
+  <!-- body -->
+  <div class="row-header">
+    <div class="row">
+      <div class="col-1 col-border">
+        <p>NO</p>
       </div>
-    </div>
-
-    <div class="col-3 col-border column-color">
-      <div class="items item-1">
+      <div class="col-4 col-border">
+        <p>CONTENT</p>
+      </div>
+      <div class="col-3 col-border">
+        <p>COLOR</p>
+      </div>
+      <div class="col-2 col-border">
         <div class="d-flex justify-content-center align-items-center">
-          <input type="color" class="me-1 ip-color" id="show_color_1" value="#F4B314">
-          <select class="form-select">
-            <option value="#F4B314">#F4B314</option>
-            <option value="#F6793A">#F6793A</option>
-            <option value="#728BF4">#728BF4</option>
-            <option value="#04D5C5">#04D5C5</option>
-            <option value="#92E230">#92E230</option>
-            <option value="custom">Custom</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-2 col-border column-phase">
-      <div class="items item-1">
-        <select class="form-select" id="show_phase_1">
-          <option value="PLAN">PLAN</option>
-          <option value="WORK">WORK</option>
-          <option value="CHECK">CHECK</option>
-          <option value="DONE">DONE</option>
-        </select>
-      </div>
-
-
-    </div>
-
-    <div class="col-2 col-border column-action">
-      <div class="items item-1">
-        <div class="btn-group w-75" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-sm btn-primary me-1 btn-edit" id="btn_edit_1">
+          <p class="me-3">PHASE</p>
+          <button type="button" class="btn btn-sm btn-warning" id="btn_phase_edit">
             <i class="fa-solid fa-pen-to-square"></i>
           </button>
-          <button type="button" class="btn btn-sm btn-danger btn-del" id="btn_del_1">
-            <i class="fa-solid fa-trash-can"></i>
-          </button>
         </div>
       </div>
-      <div class="items item-1">
-        <div class="btn-group w-75" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-sm btn-primary me-1 btn-edit" id="btn_edit_2">
-            <i class="fa-solid fa-pen-to-square"></i>
-          </button>
-          <button type="button" class="btn btn-sm btn-danger btn-del" id="btn_del_2">
-            <i class="fa-solid fa-trash-can"></i>
-          </button>
-        </div>
+      <div class="col-2 col-border">
+        <p>ACTION</p>
       </div>
     </div>
   </div>
 
-  <div class="row row-footer">
-    <div class="col">
-      <div>
-        <img class="logo" src="/img/Priva Logo.png" alt="">
-      </div>
-      <div class="d-flex">
-        <a class="nav-link me-3 active" href="/kanban">dashboard</a>
-        <a class="nav-link me-3" href="/sampling">control</a>
+  <div class="row-body">
+    <div class="row">
+      <div class="col-1 col-border  column-no"></div>
+      <div class="col-4 col-border column-content"></div>
+      <div class="col-3 col-border column-color"></div>
+      <div class="col-2 col-border column-phase"></div>
+      <div class="col-2 col-border column-action"></div>
+    </div>
+  </div>
+  
+  <div class="row-footer">
+    <div class="row">
+      <div class="col d-flex justify-content-between align-items-center">
+        <div>
+          <img class="logo" src="/img/Priva Logo.png" alt="">
+        </div>
         <div class="input-group input-group-sm ref">
           <input type="text" class="form-control" placeholder="Reference No." id="input_Ref" value="demo">
-          <div class="btn  btn-primary" id="btn_search"><i class="fa-solid fa-magnifying-glass"></i></div>
+          <button class="btn  btn-primary" id="btn_search"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
+
 
   <script src="/jquery/dist/jquery.min.js"></script>
   <script src="/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/js/fontawesome.js"></script>
   <script src="/js/math.js"></script>
   <script src="/js/swalalert2.js"></script>
-  <script src="js/socket.io.min.js"></script>
-  <script src="js/sockethost.js"></script>
+  <script src="/js/socket.io.min.js"></script>
+  <script src="/js/sockethost.js"></script>
 
   <script src="/scripts/kanban-control.js"></script>
 

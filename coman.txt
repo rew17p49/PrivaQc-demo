@@ -1,0 +1,4 @@
+add
+curl -X POST "http://192.168.1.17:3000/kanban_master/add/:ref&:content&:color"
+:ref = ชื่อ Kanban Board
+:content 

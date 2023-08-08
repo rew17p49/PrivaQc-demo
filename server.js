@@ -31,7 +31,12 @@ const {
   countKanbanPhase,
   getKanbanDataByRef,
   addKanbanData,
+  updateKanbanData,
+  updateKanbanPhase,
 } = require("./db_kanban");
+
+let kanbanRoute = require("./routes/kanban/kanban-master");
+app.use("/kanban_master", kanbanRoute);
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -230,19 +235,9 @@ app.put("/xbardata/edit/:id", async (req, res, next) => {
 
 // Kanban
 
-app.get("/kanban/test", async (req, res) => {
-  try {
-    const XBar = await countKanbanPhase("demo", "PLAN");
-    res.json(XBar);
-    console.log(XBar[0].TotalPhase);
-  } catch (error) {
-    res.status(500).json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล xbar" });
-  }
-});
-
 app.get("/kanban/get/:ref", async (req, res) => {
   try {
-    const {ref} = req.params;
+    const { ref } = req.params;
     const kanban = await getKanbanDataByRef(ref);
     res.json(kanban);
   } catch (error) {
@@ -250,31 +245,49 @@ app.get("/kanban/get/:ref", async (req, res) => {
   }
 });
 
-app.post("/kanban/add", async (req, res) => {
+app.put("/kanban/update/data/:id", async (req, res, next) => {
   try {
-    const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'xbardata'
-    let { Reference, phaseArray, content, phase, color, valueDatetime } = data;
-    if (Reference && phase) {
-      let check = await countKanbanPhase(Reference, phase);
-      let phaseLength = check[0].TotalPhase;
-      if (phaseLength < 5) {
-        await addKanbanData(data);
-        sendData("KanbanOrder", "Kanban-update", "reload");
-        res
-          .status(200)
-          .json({ message: "เพิ่มข้อมูลในตาราง KanBan สำเร็จแล้ว" });
-      } else {
-        res.status(500).json({ message: "กรุณากรอกข้อมูลให้ครบ" });
-      }
+    let { id } = req.params;
+    const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'MasterData'
+
+    if (data.content && data.color) {
+      await updateKanbanData(data, id);
+      // sendData("XBarOrder", "x-bar-update", "reload table");
+      res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จแล้ว" });
     } else {
       res.status(500).json({ message: "กรุณากรอกข้อมูลให้ครบ" });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "เกิดข้อผิดพลาดในการเพิ่มข้อมูลในตาราง KanBan" });
+    next(error);
   }
 });
+
+// app.put("/kanban/next/:id", async (req, res) => {
+//   try {
+//     let { id } = req.params;
+//     const data = req.body;
+//     let { phase, phaseArray } = data;
+//     let array = JSON.parse(phaseArray);
+//     let max = await countKanbanPhase(id, phase);
+
+//     if (max[0].TotalPhase <= 5) {
+//       await updateKanbanPhase(data,id);
+//       res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จแล้ว" });
+//     } else {
+//       // if (data.phase == 0) NextPhase = pa
+//       res
+//         .status(500)
+//         .json({ message: `Phase ${array[parseInt(phase) + 1]} มีจำนวนข้อมูลเต็มแล้ว` });
+//     }
+//     // res.json(XBar);
+//     // console.log(max[0].TotalPhase);
+//     console.log(array[2]);
+//   } catch (error) {
+//     res.status(500).json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล KanBan" });
+//   }
+// });
+
+
 
 const { socketConnection } = require("./libs/socket-io");
 socketConnection(server);

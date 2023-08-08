@@ -6,103 +6,48 @@ let ref = $("#input_Ref").val();
 let phase = [];
 const bodyAll = $(`.row-body .col-3`);
 
-// let testData = [
-//   {
-//     id: 1,
-//     Reference: "demo",
-//     phaseArray: '["PLAN", "WORK", "CHECK", "DONE"]',
-//     content: "content 1",
-//     phase: "PLAN",
-//     color: "#F4B314",
-//     valueDatetime: "2022-08-02 12:40",
-//   },
+const socketio = () => {
+  const socket = io.connect(socketHost, {
+    reconnection: true,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 5000,
+    reconnectionAttempts: 99999,
+  });
 
-//   {
-//     id: 2,
-//     Reference: "demo",
-//     phaseArray: '["PLAN", "WORK", "CHECK", "DONE"]',
-//     content: "content 2",
-//     phase: "CHECK",
-//     color: "#F6793A",
-//     valueDatetime: "2022-08-02 12:40",
-//   },
-//   {
-//     id: 3,
-//     Reference: "demo",
-//     phaseArray: '["PLAN", "WORK", "CHECK", "DONE"]',
-//     content: "content 3",
-//     phase: "PLAN",
-//     color: "#728BF4",
-//     valueDatetime: "2022-08-02 12:40",
-//   },
-//   {
-//     id: 4,
-//     Reference: "demo",
-//     phaseArray: '["PLAN", "WORK", "CHECK", "DONE"]',
-//     content: "content 4",
-//     phase: "WORK",
-//     color: "#F4B314",
-//     valueDatetime: "2022-08-02 12:40",
-//   },
-//   {
-//     id: 5,
-//     Reference: "demo",
-//     phaseArray: '["PLAN", "WORK", "CHECK", "DONE"]',
-//     content: "content 5",
-//     phase: "PLAN",
-//     color: "#F4B314",
-//     valueDatetime: "2022-08-02 12:40",
-//   },
-//   {
-//     id: 6,
-//     Reference: "demo",
-//     phaseArray: '["PLAN", "WORK", "CHECK", "DONE"]',
-//     content: "content 6",
-//     phase: "PLAN",
-//     color: "#F4B314",
-//     valueDatetime: "2022-08-02 12:40",
-//   },
+  socket.on("connect", () => {
+    console.log("connected");
+    socket.emit("joinRoom", `KanBanOrder`);
+  });
 
-//   {
-//     id: 7,
-//     Reference: "demo",
-//     phaseArray: '["PLAN", "WORK", "CHECK", "DONE"]',
-//     content: "content 7",
-//     phase: "PLAN",
-//     color: "#F4B314",
-//     valueDatetime: "2022-08-02 12:40",
-//   },
-// ];
+  socket.on("reconnect", () => {
+    console.log(`reconnect`);
+    socket.emit("joinRoom", `KanBanOrder`);
+  });
+  socket.on("connect_error", (err) => {
+    console.log(`connect_error due to ${err.message}`);
+  });
 
-// let newData = [
-//   {
-//     id: 8,
-//     Reference: "demo",
-//     phaseArray: '["PLAN", "WORK", "CHECK", "DONE"]',
-//     content: "new content 1",
-//     phase: "DONE",
-//     color: "#92E230",
-//     valueDatetime: "2022-08-02 12:40",
-//   },
-//   {
-//     id: 9,
-//     Reference: "demo",
-//     phaseArray: '["PLAN", "WORK", "CHECK", "DONE"]',
-//     content: "new content 2",
-//     phase: "WORK",
-//     color: "#92E230",
-//     valueDatetime: "2022-08-02 12:40",
-//   },
-// ];
+  socket.on("check-connect", (msg) => {
+    console.log(msg);
+  });
 
-// let arrayPhase = JSON.parse(testData[0].phaseArray);
-
+  socket.on("kanban-update", async (msg) => {
+    console.log(msg);
+    let ref = $("#input_Ref").val();
+    start(ref);
+    // console.log('reset status')
+  });
+  socket.on("disconnect", () => {
+    console.log("disconnectd");
+    window.setTimeout(socket.connect(), 5000);
+  });
+};
 
 //Head
 function genHead(array) {
   for (let i = 0; i < 4; i++) {
     let arrayPhase = [];
-    phase.length == 0 ? (arrayPhase = defaultPhase) : (arrayPhase = array);
+    array.length == 0 ? (arrayPhase = defaultPhase) : (arrayPhase = array);
     let head = $(`.row-head .phase-0${i + 1}`);
     head.html("");
     head.html(`<p>${arrayPhase[i]}</p>`);
@@ -110,17 +55,20 @@ function genHead(array) {
 }
 
 // Body
-function genBody(data,sql_phase, showing = null) {
-  let Showing = showing;
+function genBody(data, sql_phase) {
+  // console.log(data);
 
   for (let i = 0; i < data.length; i++) {
+    let show = "";
     let dataPhase = data[i].phase;
+    let status = data[i].showStatus;
+    status == 0 ? (show = "") : (show = "showing");
 
     for (let j = 0; j < 4; j++) {
       if (dataPhase == j) {
         let body = $(`.row-body .phase-0${j + 1}`);
         body.append(
-          `<div class="cel-card ${Showing}">
+          `<div class="cel-card ${show}">
             <div class="cel-card-body"  style="background: ${data[i].color}">
               <span>${data[i].content}</span>
             </div>
@@ -134,30 +82,40 @@ function genBody(data,sql_phase, showing = null) {
 // Get Data
 async function start(ref) {
   try {
-    let res = await AjaxJasonData(`/kanban/get/${ref}`, "get");
-    // console.log("get data", res);
-    let sql_data = res;
-    let sql_phase = JSON.parse(sql_data[0].phaseArray);
+    let res = await AjaxJasonData(`/kanban_master/data/${ref}`, "get");
+    // console.log("get data", res.length);
+    if (res.length != 0) {
+      let sql_data = res;
+      let sql_phase = JSON.parse(sql_data[0].phaseArray);
 
-    bodyAll.html("");
-    genHead(sql_phase)
-    genBody(sql_data,sql_phase);
-
+      bodyAll.html("");
+      genHead(sql_phase);
+      genBody(sql_data, sql_phase);
+      let reset = await AjaxJasonData(`/kanban_master/reset/status`, "put");
+      // console.log(reset);
+    } else {
+      genHead(defaultPhase);
+      bodyAll.html("");
+    }
   } catch (error) {
     console.log(error);
+    genHead(defaultPhase);
+    bodyAll.html("");
+
   }
 }
 
 start(ref);
+socketio();
 
 $("#btn_search").unbind();
 $("#btn_search").click((e) => {
-  let ref = $("#input_ref").val();
+  let ref = $("#input_Ref").val();
+  // console.log(ref);
   if (ref) {
     start(ref);
   } else {
+    genHead(defaultPhase);
     bodyAll.html("");
   }
 });
-
-
