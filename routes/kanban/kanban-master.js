@@ -52,7 +52,8 @@ router.put("/edit/:id", async (req, res, next) => {
       WHERE id = ${id};`;
       let result = await pool.request().query(query);
       res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จแล้ว" });
-      sendData("KanBanOrder", "kanban-update", "refresh");
+      sendData("KanBan-Board", "kanban-update", "refresh");
+      sendData("KanBan-Control", "kanban-update", "refresh");
     } else {
       res.status(500).json({ message: "กรุณากรอกข้อมูลให้ครบ" });
     }
@@ -76,7 +77,8 @@ router.put("/edit/phase_content/:ref", async (req, res, next) => {
       WHERE reference = N'${ref}';`;
       let result = await pool.request().query(query);
       res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จแล้ว" });
-      sendData("KanBanOrder", "kanban-update", "refresh");
+      sendData("KanBan-Board", "kanban-update", "refresh");
+      sendData("KanBan-Control", "kanban-update", "refresh");
     } else {
       res.status(500).json({ message: "กรุณากรอกข้อมูลให้ครบ" });
     }
@@ -94,9 +96,9 @@ router.post("/add/:ref&:content&:color", async (req, res, next) => {
     let { ref, content, color } = req.params;
     let phaseArray = JSON.stringify(defaultPhaseArray);
     if (ref && content) {
-      let input_color
-      (color) ? input_color = `#${color}` : input_color =defaultColor
-      console.log('color: ', input_color)
+      let input_color;
+      color ? (input_color = `#${color}`) : (input_color = defaultColor);
+      console.log("color: ", input_color);
       let query_count_phase = `SELECT COUNT(*) AS TotalPhase FROM KanBan WHERE reference = N'${ref}' AND phase = N'${defaultPhase}'`;
       let query_last_position = `SELECT MAX(position) AS last_position FROM KanBan WHERE reference = N'${ref}' AND phase = N'${defaultPhase}'`;
       let pool = await sql.connect(config);
@@ -111,7 +113,8 @@ router.post("/add/:ref&:content&:color", async (req, res, next) => {
         VALUES ( N'${ref}',N'${phaseArray}', N'${content}', ${defaultPhase}, N'${input_color}',${position},1)`;
         let result = await pool.request().query(query);
         res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จแล้ว" });
-        sendData("KanBanOrder", "kanban-update", "refresh");
+        sendData("KanBan-Board", "kanban-update", "refresh");
+        sendData("KanBan-Control", "kanban-update", "refresh");
       } else {
         res.status(500).json({ message: "มี Content ใน Phase ได้ไม่เกิน 5" });
       }
@@ -174,7 +177,8 @@ router.put("/next/:ref&:phase&:position", async (req, res, next) => {
         let result = await pool.request().query(query_next);
         let re = await pool.request().query(query_re_position_select);
         res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จแล้ว" });
-        sendData("KanBanOrder", "kanban-update", "refresh");
+        sendData("KanBan-Board", "kanban-update", "refresh");
+      sendData("KanBan-Control", "kanban-update", "refresh");
       } else {
         res.status(500).json({ message: "มี Content ใน Phase ได้ไม่เกิน 5" });
       }
@@ -216,7 +220,8 @@ router.delete("/delete/:ref&:phase&:position", async (req, res, next) => {
     let result = await pool.request().query(query_delete);
     let re = await pool.request().query(query_re_position);
     res.status(200).json({ message: "ลบข้อมูลสำเร็จแล้ว" });
-    sendData("KanBanOrder", "kanban-update", "refresh");
+    sendData("KanBan-Board", "kanban-update", "refresh");
+      sendData("KanBan-Control", "kanban-update", "refresh");
   } catch (error) {
     res.status(500).json({
       message: `เกิดข้อผิดพลาดในการรับข้อมูล: ${error} `,

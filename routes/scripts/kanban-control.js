@@ -19,12 +19,12 @@ const socketio = () => {
 
   socket.on("connect", () => {
     console.log("connected");
-    socket.emit("joinRoom", `KanBanOrder`);
+    socket.emit("joinRoom", `KanBan-Control`);
   });
 
   socket.on("reconnect", () => {
     console.log(`reconnect`);
-    socket.emit("joinRoom", `KanBanOrder`);
+    socket.emit("joinRoom", `KanBan-Control`);
   });
   socket.on("connect_error", (err) => {
     console.log(`connect_error due to ${err.message}`);
