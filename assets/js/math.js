@@ -107,7 +107,7 @@ function AjaxJasonNoData(url, method) {
 
 function SwalAlert(txt, title) {
   let action = title.toUpperCase();
-  console.log(txt)
+  // console.log(txt)
   if (action == "ERROR") {
     Swal.fire({
       position: "center",

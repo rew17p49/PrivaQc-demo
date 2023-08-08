@@ -6,6 +6,8 @@ let ref = $("#input_Ref").val();
 let phase = [];
 const bodyAll = $(`.row-body .col-3`);
 
+
+
 const socketio = () => {
   const socket = io.connect(socketHost, {
     reconnection: true,
@@ -14,9 +16,14 @@ const socketio = () => {
     reconnectionAttempts: 99999,
   });
 
-  socket.on("connect", () => {
+  function socketConnect() {
     console.log("connected");
     socket.emit("joinRoom", `KanBan-Board`);
+  }
+
+
+  socket.on("connect", () => {
+    socketConnect()
   });
 
   socket.on("reconnect", () => {
@@ -41,6 +48,12 @@ const socketio = () => {
     console.log("disconnectd");
     window.setTimeout(socket.connect(), 5000);
   });
+  // socket.on("disconnect", function () {
+  //   socketCleanup(); // this is a function to cleanup all listeners, just in case, so you can restart fresh
+  //   socket.on("connect", function () {
+  //     socketConnect();
+  //   });
+  // });
 };
 
 //Head
@@ -101,7 +114,6 @@ async function start(ref) {
     console.log(error);
     genHead(defaultPhase);
     bodyAll.html("");
-
   }
 }
 

@@ -48,7 +48,7 @@ router.put("/edit/:id", async (req, res, next) => {
     let pool = await sql.connect(config);
     if (content && color) {
       let query = `UPDATE KanBan
-        SET content  = N'${content}',color = N'${color}',showStatus = 1
+        SET content  = N'${content}',color = N'${color}'
       WHERE id = ${id};`;
       let result = await pool.request().query(query);
       res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จแล้ว" });
@@ -112,7 +112,7 @@ router.post("/add/:ref&:content&:color", async (req, res, next) => {
         let query = `INSERT INTO KanBan (reference, phaseArray,content ,phase ,color,position,showStatus) 
         VALUES ( N'${ref}',N'${phaseArray}', N'${content}', ${defaultPhase}, N'${input_color}',${position},1)`;
         let result = await pool.request().query(query);
-        res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จแล้ว" });
+        res.status(200).json({ message: "เพิ่ม Content สำเร็จแล้ว" });
         sendData("KanBan-Board", "kanban-update", "refresh");
         sendData("KanBan-Control", "kanban-update", "refresh");
       } else {
@@ -219,7 +219,7 @@ router.delete("/delete/:ref&:phase&:position", async (req, res, next) => {
 
     let result = await pool.request().query(query_delete);
     let re = await pool.request().query(query_re_position);
-    res.status(200).json({ message: "ลบข้อมูลสำเร็จแล้ว" });
+    res.status(200).json({ message: "ลบ Content สำเร็จแล้ว" });
     sendData("KanBan-Board", "kanban-update", "refresh");
       sendData("KanBan-Control", "kanban-update", "refresh");
   } catch (error) {
