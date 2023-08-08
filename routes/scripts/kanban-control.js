@@ -46,7 +46,7 @@ const socketio = () => {
 };
 
 function gendata(data) {
-  console.log(data);
+  // console.log(data);
   let sql_phase = JSON.parse(data[0].phaseArray);
   // console.log("sql_phase: ", `[${sql_phase}]`);
   $all.html("");
@@ -275,7 +275,7 @@ function gendata(data) {
       };
       console.log(send);
 
-      let url = `/kanban_master/edit/phase/${ref}`;
+      let url = `/kanban_master/edit/phase_content/${ref}`;
 
       try {
         let res = await AjaxJasonData(url, "put", send);

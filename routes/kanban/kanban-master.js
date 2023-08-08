@@ -63,6 +63,30 @@ router.put("/edit/:id", async (req, res, next) => {
   }
 });
 
+router.put("/edit/phase_content/:ref", async (req, res, next) => {
+  try {
+    let { ref } = req.params;
+    let data = req.body;
+    let { phaseArray } = data;
+    // phaseArray = JSON.stringify(phaseArray);
+    let pool = await sql.connect(config);
+    if (ref) {
+      let query = `UPDATE KanBan
+        SET phaseArray  = N'${phaseArray}'
+      WHERE reference = N'${ref}';`;
+      let result = await pool.request().query(query);
+      res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จแล้ว" });
+      sendData("KanBanOrder", "kanban-update", "refresh");
+    } else {
+      res.status(500).json({ message: "กรุณากรอกข้อมูลให้ครบ" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: `เกิดข้อผิดพลาดในการรับข้อมูล: ${error} `,
+    });
+  }
+});
+
 // API
 router.post("/add/:ref&:content&:color", async (req, res, next) => {
   const defaultColor = "#F4B314";
@@ -105,29 +129,6 @@ router.post("/add/:ref&:content&:color", async (req, res, next) => {
         message: `เกิดข้อผิดพลาดในการรับข้อมูล: ${error} `,
       });
     }
-  }
-});
-router.put("/edit/phase/:ref", async (req, res, next) => {
-  try {
-    let { ref } = req.params;
-    let data = req.body;
-    let { phaseArray } = data;
-    // phaseArray = JSON.stringify(phaseArray);
-    let pool = await sql.connect(config);
-    if (ref) {
-      let query = `UPDATE KanBan
-        SET phaseArray  = N'${phaseArray}'
-      WHERE reference = N'${ref}';`;
-      let result = await pool.request().query(query);
-      res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จแล้ว" });
-      sendData("KanBanOrder", "kanban-update", "refresh");
-    } else {
-      res.status(500).json({ message: "กรุณากรอกข้อมูลให้ครบ" });
-    }
-  } catch (error) {
-    res.status(500).json({
-      message: `เกิดข้อผิดพลาดในการรับข้อมูล: ${error} `,
-    });
   }
 });
 

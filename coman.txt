@@ -1,4 +1,17 @@
 add
-curl -X POST "http://192.168.1.17:3000/kanban_master/add/:ref&:content&:color"
+curl -X POST "https://qc-demo.privainnotech.net/kanban_master/add/:ref&:content&:color"
+ตัวอย่าง curl -X POST "https://qc-demo.privainnotech.net/kanban_master/add/demo&TestAPI&96be25"
+
+next 
+curl -X PUT "https://qc-demo.privainnotech.net/kanban_master/next/:ref&:phase&:position"
+ตัวอย่าง curl -X PUT "https://qc-demo.privainnotech.net/kanban_master/next/demo&3&1"
+
+next 
+curl -X DELETE "https://qc-demo.privainnotech.net/kanban_master/delete/:ref&:phase&:position"
+ตัวอย่าง curl -X DELETE "https://qc-demo.privainnotech.net/kanban_master/delete/demo&3&1"
+
 :ref = ชื่อ Kanban Board
-:content 
+:content  = ข้อมูลที่จะแสดง
+:color  = สีของป้าย
+:phase = ตำแหน่งของ phase ที่ต้องการจะแก้ไข (1-4)
+:position = ตำแหน่งของ content ใน phase ที่ต้องการจะแก้ไข (1-5)
