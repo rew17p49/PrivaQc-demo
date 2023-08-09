@@ -181,7 +181,7 @@ function genChart(value, M = null, SD_PPK = null, lcl = null, ucl = null) {
     x: Centre.x,
     y: Centre.y,
     mode: "lines",
-    name: "Centre",
+    name: "CL",
     showlegend: true,
     line: {
       color: "grey",
