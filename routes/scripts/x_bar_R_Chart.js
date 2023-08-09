@@ -182,7 +182,7 @@ function runChart(data) {
     };
 
     genXbarChart("X-Bar", chart_X_Bar_Data);
-    genXbarChart("S-Bar", chart_S_Bar_Data);
+    genXbarChart("S", chart_S_Bar_Data);
   }
 }
 // solution กรณี k = 1
