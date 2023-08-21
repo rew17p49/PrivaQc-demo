@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const { sql, config, pool } = require("../../config");
+const { sendData } = require("../../libs/socket-io");
 
 const defaultPhaseArray = ["PLAN", "WORK", "CHECK", "DONE"];
 const defaultPhase = 0;
-const { sendData } = require("../../libs/socket-io");
 
 router.get("/data/:ref", async (req, res) => {
   try {

@@ -1,3 +1,35 @@
+function calSum(array) {
+  let sum = array.reduce(
+    (total, num) => parseFloat(total) + parseFloat(num),
+    0
+  );
+
+  return sum;
+}
+
+function calMean(array) {
+  let sum = calSum(array);
+  let mean = parseFloat(sum) / parseFloat(array.length);
+  return mean;
+}
+
+function calSD_PPK(array) {
+  let mean = calMean(array);
+  let squaredDifferences = array.map((value) => Math.pow(value - mean, 2));
+  // console.log('squ: ',squaredDifferences)
+  let sum = calSum(squaredDifferences);
+  let variance = sum / (squaredDifferences.length - 1);
+  let standardDeviation = Math.sqrt(variance);
+  return standardDeviation;
+}
+
+
+function normalDistribution(x, mean, stdDev) {
+  const coefficient = 1 / (stdDev * Math.sqrt(2 * Math.PI));
+  const exponent = -Math.pow(x - mean, 2) / (2 * Math.pow(stdDev, 2));
+  return coefficient * Math.exp(exponent);
+}
+
 function histogramChart(data) {
   let mean = parseFloat(data.mean);
   let sd = parseFloat(data.sd);
@@ -20,15 +52,12 @@ function histogramChart(data) {
   cpk = parseFloat(cpk.toFixed(2));
   $("#Show_CP").val(cp);
   $("#Show_CPK").val(cpk);
-  let max_normal = 0
+
   for (let i = 0; i < 101; i++) {
     let x = mean - 3 * sd + i * Inc;
     x = parseFloat(x.toFixed(2));
     let nomal = normalDistribution(x, mean, sd);
-
     nomal = parseFloat(nomal.toFixed(6));
-    if (nomal >= max_normal) max_normal = nomal;
-    // console.log('normal dis',nomal)
     normDist.push({ x: x, y: nomal });
   }
 

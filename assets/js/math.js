@@ -141,10 +141,3 @@ function SwalError(txt) {
     confirmButtonColor: "#FF5733",
   });
 }
-
-// // ตัวอย่างการใช้งาน
-// const numbers = [1, 2, 3, 2, 2, 4, 5, 4, 2];
-// const popularNumberInfo = calPopNumber(numbers);
-
-// console.log(popularNumberInfo.number); // Output: 2
-// console.log(popularNumberInfo.count); // Output: 4

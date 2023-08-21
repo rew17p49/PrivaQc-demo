@@ -27,13 +27,13 @@ const {
   uppdateXBarData,
 } = require("./database");
 
-const {
-  countKanbanPhase,
-  getKanbanDataByRef,
-  addKanbanData,
-  updateKanbanData,
-  updateKanbanPhase,
-} = require("./db_kanban");
+// const {
+//   countKanbanPhase,
+//   getKanbanDataByRef,
+//   addKanbanData,
+//   updateKanbanData,
+//   updateKanbanPhase,
+// } = require("./db_kanban");
 
 let kanbanRoute = require("./routes/kanban/kanban-master");
 app.use("/kanban_master", kanbanRoute);
@@ -235,55 +235,30 @@ app.put("/xbardata/edit/:id", async (req, res, next) => {
 
 // Kanban
 
-app.get("/kanban/get/:ref", async (req, res) => {
-  try {
-    const { ref } = req.params;
-    const kanban = await getKanbanDataByRef(ref);
-    res.json(kanban);
-  } catch (error) {
-    res.status(500).json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล KanBan" });
-  }
-});
-
-app.put("/kanban/update/data/:id", async (req, res, next) => {
-  try {
-    let { id } = req.params;
-    const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'MasterData'
-
-    if (data.content && data.color) {
-      await updateKanbanData(data, id);
-      // sendData("XBarOrder", "x-bar-update", "reload table");
-      res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จแล้ว" });
-    } else {
-      res.status(500).json({ message: "กรุณากรอกข้อมูลให้ครบ" });
-    }
-  } catch (error) {
-    next(error);
-  }
-});
-
-// app.put("/kanban/next/:id", async (req, res) => {
+// app.get("/kanban/get/:ref", async (req, res) => {
 //   try {
-//     let { id } = req.params;
-//     const data = req.body;
-//     let { phase, phaseArray } = data;
-//     let array = JSON.parse(phaseArray);
-//     let max = await countKanbanPhase(id, phase);
-
-//     if (max[0].TotalPhase <= 5) {
-//       await updateKanbanPhase(data,id);
-//       res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จแล้ว" });
-//     } else {
-//       // if (data.phase == 0) NextPhase = pa
-//       res
-//         .status(500)
-//         .json({ message: `Phase ${array[parseInt(phase) + 1]} มีจำนวนข้อมูลเต็มแล้ว` });
-//     }
-//     // res.json(XBar);
-//     // console.log(max[0].TotalPhase);
-//     console.log(array[2]);
+//     const { ref } = req.params;
+//     const kanban = await getKanbanDataByRef(ref);
+//     res.json(kanban);
 //   } catch (error) {
 //     res.status(500).json({ message: "เกิดข้อผิดพลาดในการรับข้อมูล KanBan" });
+//   }
+// });
+
+// app.put("/kanban/update/data/:id", async (req, res, next) => {
+//   try {
+//     let { id } = req.params;
+//     const data = req.body; // ข้อมูลที่คุณต้องการเพิ่มในตาราง 'MasterData'
+
+//     if (data.content && data.color) {
+//       await updateKanbanData(data, id);
+//       // sendData("XBarOrder", "x-bar-update", "reload table");
+//       res.status(200).json({ message: "อัปเดตข้อมูลสำเร็จแล้ว" });
+//     } else {
+//       res.status(500).json({ message: "กรุณากรอกข้อมูลให้ครบ" });
+//     }
+//   } catch (error) {
+//     next(error);
 //   }
 // });
 
