@@ -84,6 +84,7 @@ async function getXBarData() {
     return [];
   }
 }
+
 async function getXBarDataByRef(ref) {
   try {
     const pool = await sql.connect(config);
